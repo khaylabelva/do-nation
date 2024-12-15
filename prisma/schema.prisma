@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  email        String   @unique
+  password     String
+  totalDonasi  Int      @default(0) 
+  totalAksi    Int      @default(0) 
+  aksiHistory  UserAksi[]   
+  donasiHistory UserDonasi[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model CampaignDonasi {
+  id             Int         @id @default(autoincrement())
+  judul          String
+  foto           String
+  deskripsi      String
+  penyelenggara  String
+  targetDonasi   Int
+  progressDonasi Int         @default(0)
+  batasWaktu     DateTime    
+  donaturList UserDonasi[]    // Daftar donatur
+  createdAt      DateTime    @default(now())
+}
+
+model CampaignAksi {
+  id             Int         @id @default(autoincrement())
+  judul          String
+  foto           String
+  deskripsi      String
+  penyelenggara  String
+  targetAksi   Int
+  progressAksi Int         @default(0)
+  batasWaktu     DateTime    
+  aksiList       Aksi[]      // Jenis aksi yang bisa dilakukan
+  pelakuAksiList     UserAksi[]      // Daftar pelaku aksi
+  konversi       Int         // Jumlah konversi, misalnya 1 aksi = Rp20.000
+  createdAt      DateTime    @default(now())
+}
+
+model UserDonasi {
+  id             Int            @id @default(autoincrement())
+  jumlah         Int          
+  metodePembayaran String   
+  user           User           @relation(fields: [userId], references: [id])
+  userId         Int
+  campaign       CampaignDonasi @relation(fields: [campaignId], references: [id])
+  campaignId     Int
+  createdAt      DateTime       @default(now())
+}
+
+model Aksi {
+  campaignId Int    
+  id         Int      
+  deskripsi  String    
+  campaign   CampaignAksi @relation(fields: [campaignId], references: [id])
+
+  @@id([campaignId, id]) 
+}
+
+model UserAksi {
+  id             Int           @id @default(autoincrement())
+  fotoDokumentasi String       // Path ke file gambar 
+  user           User          @relation(fields: [userId], references: [id])
+  userId         Int
+  campaign       CampaignAksi  @relation(fields: [campaignId], references: [id])
+  campaignId     Int
+  verified       Boolean       @default(false) 
+  createdAt      DateTime      @default(now())
+}
