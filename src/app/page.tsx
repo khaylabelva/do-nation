@@ -7,31 +7,31 @@ const History = () => {
       title: "Banjir Bandang di Palu",
       totalDonation: "25.000",
       daysLeft: 7,
-      imageSrc: "/images/flood.jpg",
+      imageSrc: "/images/image4.png",
     },
     {
       title: "Gempa Bumi di Lombok",
       totalDonation: "50.000",
       daysLeft: 10,
-      imageSrc: "/images/earthquake.jpg",
+      imageSrc: "/images/image4.png",
     },
     {
       title: "Kebakaran Hutan di Kalimantan",
       totalDonation: "75.000",
       daysLeft: 15,
-      imageSrc: "/images/fire.jpg",
+      imageSrc: "/images/image4.png",
     },
     {
       title: "Gempa Bumi di Lombok",
       totalDonation: "50.000",
       daysLeft: 10,
-      imageSrc: "/images/earthquake.jpg",
+      imageSrc: "/images/image4.png",
     },
     {
       title: "Gempa Bumi di Lombok",
       totalDonation: "50.000",
       daysLeft: 10,
-      imageSrc: "/images/earthquake.jpg",
+      imageSrc: "/images/image4.png",
     },
   ];
 
@@ -62,9 +62,9 @@ const History = () => {
       </nav>
 
       {/* Konten Utama */}
-      <div className="flex-grow max-w-6xl p-6 flex gap-8">
+      <div className="flex-grow p-6 flex gap-8">
         {/* Rekapitulasi (Kiri) */}
-        <div className="w-1/3 space-y-6">
+        <div className="w-[400px] space-y-6">
           <h2 className="text-2xl font-bold text-blue-600">Rekapitulasi</h2>
 
           {/* Total Donasi */}
@@ -91,7 +91,7 @@ const History = () => {
         </div>
 
         {/* Riwayat (Kanan) */}
-        <div className="w-2/3">
+        <div className="w-[1000px]">
           <h2 className="text-2xl font-bold text-blue-600 mb-4">Riwayat</h2>
 
           {/* Scrollable Donation Cards */}
