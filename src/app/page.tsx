@@ -38,7 +38,7 @@ const History = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 overflow-hidden">
       {/* Header Baru */}
-      <nav className="flex items-center justify-between p-6 bg-white shadow-md">
+      <nav className="flex items-center justify-between p-6 bg-white">
         {/* Logo + Garis + Navigasi */}
         <div className="flex items-center">
           {/* Logo */}
