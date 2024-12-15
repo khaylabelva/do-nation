@@ -111,9 +111,12 @@ export default function HomePage() {
 
       {/* Donasi Section */}
       <section className="px-16 pt-16">
-        <h2 className="text-2xl font-bold mb-8">
+        <h2 className="text-2xl font-bold mb-1">
           Ayo Bertindak <span className="text-blue-500">Sekarang!</span>
         </h2>
+        <p className="text-gray-400 mt-2 mb-8 mx-auto font-normal">
+        Waktu tak menunggu. Bersama, kita bisa membuat perbedaan. Berikan donasi Anda dan lihat dampaknya langsung. Setiap detik berarti!
+        </p>
         {/* Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {donations.map((donation, index) => (
@@ -162,12 +165,12 @@ export default function HomePage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="mt-10 px-4">
-        <h2 className="text-2xl font-bold text-center">Frequently Asked Questions</h2>
-        <p className="text-gray-500 text-center mt-2 mb-6">
+      <section className="mt-10 px-16 py-14">
+        <h2 className="text-2xl font-bold">Frequently Asked Questions</h2>
+        <p className="text-gray-400 mt-2 mb-16">
           Kami di sini untuk membantu Anda memulai perjalanan kebaikan. Temukan jawabannya di sini!
         </p>
-        <div className="space-y-4">
+        <div className="max-w-3xl mx-auto divide-y divide-gray-200">
           {[
             "Bagaimana Cara Saya Berdonasi?",
             "Bisakah Saya Berdonasi untuk Mengenang Seseorang?",
@@ -176,12 +179,18 @@ export default function HomePage() {
           ].map((faq, index) => (
             <details
               key={index}
-              className="bg-gray-100 rounded-lg p-4 cursor-pointer"
+              className="group py-4 cursor-pointer"
             >
-              <summary className="font-bold hover:text-blue-500 transition">
+              {/* FAQ Summary */}
+              <summary className="flex justify-between items-center text-lg font-semibold text-gray-800 hover:text-blue-500 transition">
                 {faq}
+                <span className="text-xl text-gray-400 group-open:rotate-45 transition-transform">
+                  +
+                </span>
               </summary>
-              <p className="mt-2 text-gray-500">
+
+              {/* FAQ Content */}
+              <p className="mt-2 text-sm text-gray-500">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec posuere ultricies nisi non interdum.
               </p>
             </details>
