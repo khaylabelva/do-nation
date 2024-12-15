@@ -4,7 +4,7 @@ import Placeholder from '@Images/image-placeholder.png'; // Replace with the act
 import Image from 'next/image';
 import ProgressBar from '@/components/ui/progressbar'; // Adjust the path as needed
 
-const ActionPage = async () => {
+const ActionPage = () => {
   return (
     <div className="bg-neutral-50 min-h-screen flex flex-col overflow-hidden">
       <Navbar />
@@ -63,6 +63,7 @@ const ActionPage = async () => {
               </div>
             </div>
 
+            {/* Action Section */}
             <div className="flex flex-col border rounded-xl border-neutral-300 p-4 gap-4">
               <div className="flex flex-1 flex-row gap-2">
                 {/* Conversion Rate */}
@@ -91,10 +92,13 @@ const ActionPage = async () => {
                 </div>
               </div>
 
-              {/* Action Button */}
-              <Button className="w-full bg-[#4C84F6] text-white py-3 rounded-full text-lg font-semibold transition-transform duration-300 transform hover:scale-105 hover:shadow-lg hover:bg-[#2C63D2]">
+              {/* Action Buttons */}
+              <Button
+                className="w-full bg-[#4C84F6] text-white py-3 rounded-full text-lg font-semibold transition-transform duration-300 transform hover:scale-105 hover:shadow-lg hover:bg-[#2C63D2]"
+              >
                 Mulai Aksi
               </Button>
+    
             </div>
           </div>
         </div>
