@@ -9,7 +9,7 @@ interface DonationCardProps {
 
 const DonationCard: React.FC<DonationCardProps> = ({ title, totalDonation, daysLeft, imageSrc }) => {
   return (
-    <div className="bg-white rounded-2xl border w-80" style={{ overflow: "hidden" }}>
+    <div className="bg-white rounded-2xl border w-80 cursor-pointer" style={{ overflow: "hidden" }}>
       {/* Tambahkan rounded di gambar */}
       <img
         src={imageSrc}

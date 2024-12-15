@@ -91,7 +91,7 @@ const History = () => {
         </div>
 
         {/* Riwayat (Kanan) */}
-        <div className="w-[1000px]">
+        <div className="w-[1050px]">
           <h2 className="text-2xl font-bold text-blue-600 mb-4">Riwayat</h2>
 
           {/* Scrollable Donation Cards */}
