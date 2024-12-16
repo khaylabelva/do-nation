@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import AksiCard from "../../../components/AksiCard";
-import Navbar from "../../../components/Navbar";
+import Navbar from "@/components/layout/navbar";
 
 const AksiSosialPage: React.FC = () => {
   const initialData = [

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import DonasiCard from "../../../components/DonasiCard";
-import Navbar from "../../../components/Navbar";
+import Navbar from "@/components/layout/navbar";
 
 const DonasiPage: React.FC = () => {
   const initialData = [

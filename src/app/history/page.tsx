@@ -1,3 +1,4 @@
+import Navbar from "@/components/layout/navbar";
 import DonationCard from "@/components/ui/DonationCard";
 
 /* page.tsx */
@@ -37,29 +38,7 @@ const History = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 overflow-hidden">
-      {/* Header Baru */}
-      <nav className="flex items-center justify-between p-6 bg-white">
-        {/* Logo + Garis + Navigasi */}
-        <div className="flex items-center">
-          {/* Logo */}
-          <div className="text-[#2C63D2] text-xl font-bold">
-            Do<span className="text-[#4C84F6]">Nation</span>
-          </div>
-
-          {/* Garis abu-abu */}
-          <div className="h-6 w-[2px] bg-gray-300 mx-9"></div>
-
-          {/* Navigasi */}
-          <ul className="flex space-x-9 text-black font-normal">
-            <li className="cursor-pointer">Home</li>
-            <li className="cursor-pointer">Donation</li>
-            <li className="cursor-pointer">FAQ</li>
-          </ul>
-        </div>
-
-        {/* Tombol Masuk */}
-        <button className="bg-[#4C84F6] text-white px-4 py-2 rounded-[12px]">Masuk</button>
-      </nav>
+      <Navbar />
 
       {/* Konten Utama */}
       <div className="flex-grow p-6 flex gap-8">

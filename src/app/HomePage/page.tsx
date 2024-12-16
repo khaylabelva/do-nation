@@ -1,4 +1,4 @@
-import Navbar from "../../components/Navbar";
+import Navbar from "@/components/layout/navbar";
 import HeroSection from "../../components/HeroSection";
 import AksiSection from "../../components/AksiSection";
 import DonasiSection from "../../components/DonasiSection";

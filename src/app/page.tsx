@@ -1,3 +1,5 @@
+import Navbar from "@/components/layout/navbar";
+
 export default function HomePage() {
   const donations = [
     {
@@ -24,28 +26,7 @@ export default function HomePage() {
   ];
   return (
     <div className="font-sans">
-      <nav className="flex items-center justify-between p-6">
-        {/* Logo + Garis + Navigasi */}
-        <div className="flex items-center">
-          {/* Logo */}
-          <div className="text-[#2C63D2] text-xl font-bold">
-            Do<span className="text-[#4C84F6]">Nation</span>
-          </div>
-
-          {/* Garis abu-abu */}
-          <div className="h-6 w-[2px] bg-gray-300 mx-9"></div>
-
-          {/* Navigasi (Mepet Garis) */}
-          <ul className="flex space-x-9 text-black font-normal">
-            <li className="cursor-pointer">Home</li>
-            <li className="cursor-pointer">Donation</li>
-            <li className="cursor-pointer">FAQ</li>
-          </ul>
-        </div>
-
-        {/* Tombol Masuk */}
-        <button className="bg-[#4C84F6] text-white px-4 py-2 rounded-[12px]">Masuk</button>
-      </nav>
+      <Navbar />
 
       <div className="relative w-full max-w-[1300px] mx-auto h-[470px] flex bg-blue-100 overflow-hidden rounded-2xl">
         <img
