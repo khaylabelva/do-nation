@@ -148,13 +148,15 @@ const ActionPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Organizer Info */}
-                <div className="bg-gray-100 p-4 rounded-xl flex flex-col flex-1 items-start font-semibold">
-                  <div className="text-2xl">{campaign.penyelenggara}</div>
-                  <p className="text-xs font-medium text-neutral-500">
-                    Penggalang Aksi
-                  </p>
-                </div>
+              {/* Organizer Info */}
+              <div className="bg-gray-100 p-4 rounded-xl flex flex-col flex-1 items-start font-semibold">
+                <div className="text-2xl overflow-hidden whitespace-nowrap text-ellipsis w-[160px]">{campaign.penyelenggara}</div>
+                <p className="text-xs font-medium text-neutral-500">
+                  Penggalang Aksi
+                </p>
+              </div>
+
+
               </div>
 
               {/* Action Buttons */}
