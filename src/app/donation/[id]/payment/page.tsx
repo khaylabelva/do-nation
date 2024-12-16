@@ -86,11 +86,13 @@ const PaymentPage: React.FC = () => {
       {/* Main Container */}
       <div className="container mx-auto px-4 py-6 h-full flex flex-col">
         {/* Header */}
-        <div className="mb-7">
-          <BackButton />
-          <div className="mt-16 flex items-center">
+        <div className="mb-7"> 
+          <div className="mt-4 flex items-center justify-between">
+            <div>
+              <BackButton />
+            </div>
             <h1 className="text-3xl font-bold">{judul}</h1>
-            <span className="ml-auto text-gray-500 text-lg">{penyelenggara}</span>
+            <span className="text-gray-500 text-lg">{penyelenggara}</span>
           </div>
         </div>
 
