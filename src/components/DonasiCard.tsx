@@ -10,7 +10,7 @@ interface DonasiCardProps {
   penyelenggara: string;
   targetDonasi: number;
   progressDonasi: number;
-  batasWaktu: Date;
+  batasWaktu: string;
 }
 
 const DonasiCard: React.FC<DonasiCardProps> = ({
@@ -30,7 +30,7 @@ const DonasiCard: React.FC<DonasiCardProps> = ({
   };
 
   const handleCardClick = () => {
-    router.push(`/donasi/${id}`); // Navigasi ke halaman donasi/{id}
+    router.push(`/donation/${id}`); // Navigasi ke halaman donasi/{id}
   };
 
   return (
