@@ -66,7 +66,7 @@ const PaymentPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="h-screen flex items-center justify-center">
         <h1 className="text-2xl font-bold text-gray-600">Memuat data...</h1>
       </div>
     );
@@ -74,7 +74,7 @@ const PaymentPage: React.FC = () => {
 
   if (!donationCampaign) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="h-screen flex items-center justify-center">
         <h1 className="text-2xl font-bold text-gray-600">Kampanye donasi tidak ditemukan</h1>
       </div>
     );
@@ -83,14 +83,16 @@ const PaymentPage: React.FC = () => {
   const { judul, penyelenggara } = donationCampaign;
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white h-screen overflow-hidden">
       {/* Main Container */}
-      <div className="container mx-auto px-4 py-8 mt-8">
+      <div className="container mx-auto px-4 py-6 h-full flex flex-col justify-between">
         {/* Header */}
-        <div className="flex items-center mb-7">
+        <div className="mb-7">
           <BackButton />
-          <h1 className="text-3xl font-bold">{judul}</h1>
-          <span className="ml-auto text-gray-500 text-lg">{penyelenggara}</span>
+          <div className="mt-4 flex items-center">
+            <h1 className="text-3xl font-bold">{judul}</h1>
+            <span className="ml-auto text-gray-500 text-lg">{penyelenggara}</span>
+          </div>
         </div>
 
         {/* Isi Nominal Donasi */}
@@ -111,7 +113,7 @@ const PaymentPage: React.FC = () => {
         </div>
 
         {/* Dua Kolom */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
           {/* Kolom Kiri */}
           <div className="flex flex-col gap-4">
             {/* Informasi Donatur */}
