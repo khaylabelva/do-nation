@@ -1,6 +1,5 @@
 "use client";
 
-import Navbar from "@/components/layout/navbar";
 import BackButton from "@/components/ui/backbutton";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -66,7 +65,7 @@ const PaymentPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-screen flex items-center justify-center overflow-hidden">
         <h1 className="text-2xl font-bold text-gray-600">Memuat data...</h1>
       </div>
     );
@@ -74,7 +73,7 @@ const PaymentPage: React.FC = () => {
 
   if (!donationCampaign) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-screen flex items-center justify-center overflow-hidden">
         <h1 className="text-2xl font-bold text-gray-600">Kampanye donasi tidak ditemukan</h1>
       </div>
     );
