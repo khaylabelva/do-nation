@@ -1,7 +1,33 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+
+type PaymentMethod = {
+  id: number;
+  name: string;
+  image: string;
+};
 
 const PaymentPage = () => {
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState<PaymentMethod | null>(null);
+
+  const paymentMethods: PaymentMethod[] = [
+    { id: 1, name: "QRIS", image: "./qris.png" },
+    { id: 2, name: "GoPay", image: "./gopay.png" },
+    { id: 3, name: "BCA", image: "./bca.png" },
+    { id: 4, name: "Mandiri", image: "./mandiri.png" },
+  ];
+
+  const togglePaymentModal = () => {
+    setIsPaymentModalOpen(!isPaymentModalOpen);
+  };
+
+  const handlePaymentSelection = (method: PaymentMethod) => {
+    setSelectedPaymentMethod(method);
+    setIsPaymentModalOpen(false);
+  };
+
   return (
     <div className="font-sans h-screen overflow-hidden flex items-start justify-center pt-4 bg-white">
       <div className="container mx-auto px-4 py-4 md:px-1 md:py-6">
@@ -9,9 +35,7 @@ const PaymentPage = () => {
         <div className="flex items-center mb-7">
           <button className="text-blue-500 text-3xl mr-4">←</button>
           <h1 className="text-3xl font-bold">Donasi Banjir Bandang di Palu</h1>
-          <span className="ml-auto text-gray-500 text-lg">
-            Unity Foundation
-          </span>
+          <span className="ml-auto text-gray-500 text-lg">Unity Foundation</span>
         </div>
 
         {/* Isi Nominal Donasi */}
@@ -38,9 +62,7 @@ const PaymentPage = () => {
             {/* Informasi Donatur */}
             <div className="border border-gray-200 rounded-2xl bg-white p-5 shadow-sm flex flex-col">
               <h3 className="font-semibold text-xl mb-2">Siti Kusmini</h3>
-              <p className="text-gray-400 text-base mb-2">
-                sitikusmini mail.com
-              </p>
+              <p className="text-gray-400 text-base mb-2">sitikusmini@mail.com</p>
               {/* Toggle Switch */}
               <div className="flex items-center justify-between">
                 <label className="text-sm text-gray-600">
@@ -56,11 +78,25 @@ const PaymentPage = () => {
 
             {/* Pilih Metode Pembayaran */}
             <div className="border border-gray-200 rounded-2xl bg-white p-5 shadow-sm flex justify-between items-center">
-              <h3 className="font-semibold text-xl">
-                Pilih Metode Pembayaran
-              </h3>
-              <button className="bg-blue-600 text-white py-1 px-6 rounded-full hover:bg-blue-700 text-sm font-semibold">
-                Pilih
+              <h3 className="font-semibold text-xl">Pilih Metode Pembayaran</h3>
+              <button
+                className={`text-sm font-semibold flex items-center gap-2 ${selectedPaymentMethod ? 'bg-white' : 'bg-blue-500'} ${selectedPaymentMethod ? 'text-gray-800' : 'text-white'} px-7 py-1 rounded-full`}
+                onClick={togglePaymentModal}
+              >
+                {selectedPaymentMethod ? (
+                  <>
+                    <img
+                      src={selectedPaymentMethod.image}
+                      alt={selectedPaymentMethod.name}
+                      className="w-5 h-5 object-contain"
+                    />
+                    <span className="font-medium">
+                      {selectedPaymentMethod.name}
+                    </span>
+                  </>
+                ) : (
+                  "Pilih"
+                )}
               </button>
             </div>
           </div>
@@ -82,28 +118,50 @@ const PaymentPage = () => {
         <div className="flex items-center justify-between mt-6 gap-4">
           {/* Kotak Total Donasi */}
           <div className="flex items-center justify-between border border-gray-200 rounded-2xl bg-white p-5 shadow-sm h-14 w-[500px]">
-          {/* Ikon di Kiri */}
-          <div className="flex items-center bg-blue-100 text-blue-600 rounded-full p-2 text-2xl">
-            <img src="/image.png" alt="icon" className="w-7 h-7" />
+            <div className="flex items-center bg-blue-100 text-blue-600 rounded-full p-2 text-2xl">
+              <img src="/image-1.png" alt="icon" className="w-7 h-7" />
+            </div>
+            <div className="flex-1 text-left ml-4">
+              <p className="text-gray-500 text-[14px]">Total Donasi</p>
+            </div>
+            <div className="text-blue-600 font-bold text-[24px]">Rp100.000</div>
           </div>
-
-          {/* Total Donasi di Tengah */}
-          <div className="flex-1 text-left ml-4">
-            <p className="text-gray-500 text-[14px]">Total Donasi</p>
-          </div>
-
-          {/* Jumlah di Kanan */}
-          <div className="text-blue-600 font-bold text-[24px]">
-            Rp100.000
-          </div>
-        </div>
-
-          {/* Tombol Lanjut Pembayaran */}
           <button className="bg-blue-600 text-white h-14 px-12 rounded-2xl text-xl font-semibold hover:bg-blue-700 flex-grow">
             Lanjut Pembayaran
           </button>
         </div>
       </div>
+
+      {/* Pop-up Metode Pembayaran */}
+      {isPaymentModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 shadow-lg w-[90%] max-w-md relative">
+            <button
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              onClick={togglePaymentModal}
+            >
+              ✖
+            </button>
+            <h3 className="font-bold text-xl mb-6 text-center">Pilih Metode Pembayaran</h3>
+            <ul className="space-y-4">
+              {paymentMethods.map((method) => (
+                <li
+                  key={method.id}
+                  className="flex items-center gap-4 border-b pb-6 cursor-pointer "
+                  onClick={() => handlePaymentSelection(method)}
+                >
+                  <img
+                    src={method.image}
+                    alt={method.name}
+                    className="w-10 h-10 rounded object-contain"
+                  />
+                  <span className="font-medium text-gray-800">{method.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
