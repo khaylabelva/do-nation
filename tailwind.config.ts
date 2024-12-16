@@ -10,7 +10,7 @@ export default {
   theme: {
   	extend: {
 		fontFamily: {
-			sans: ["var(--font-poppins)", "sans-serif"], // Gunakan Poppins sebagai font default
+			sans: ["Poppins", "sans-serif"]
 		},
   		colors: {
   			background: 'hsl(var(--background))',
@@ -54,11 +54,7 @@ export default {
   				'5': 'hsl(var(--chart-5))'
   			}
   		},
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		}
+		
   	}
   },
   plugins: [require("tailwindcss-animate")],
