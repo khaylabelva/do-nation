@@ -1,38 +1,44 @@
 import Navbar from "@/components/layout/navbar";
-import DonationCard from "@/components/ui/DonationCard";
+import DonasiCard from "@/components/DonasiCard";
 
 /* page.tsx */
 const History = () => {
   const donations = [
     {
-      title: "Banjir Bandang di Palu",
+      id: 1,
+      judul: "Banjir Bandang di Palu",
       totalDonation: "25.000",
       daysLeft: 7,
-      imageSrc: "/images/image4.png",
+      imageSrc: "./flood.jpg",
+      deskripsi: "Deskripsi singkat tentang aksi Banjir Bandang di Palu.",
+      penyelenggara: "Penyelenggara 1",
+      targetDonasi: 100000,
+      progressDonasi: 25000,
+      batasWaktu: "2024-12-31",
     },
     {
-      title: "Gempa Bumi di Lombok",
+      id: 2,
+      judul: "Gempa Bumi di Lombok",
       totalDonation: "50.000",
       daysLeft: 10,
-      imageSrc: "/images/image4.png",
+      imageSrc: "./earthquake.jpg",
+      deskripsi: "Deskripsi singkat tentang aksi Gempa Bumi di Lombok.",
+      penyelenggara: "Penyelenggara 2",
+      targetDonasi: 100000,
+      progressDonasi: 50000,
+      batasWaktu: "2024-12-31",
     },
     {
-      title: "Kebakaran Hutan di Kalimantan",
+      id: 3,
+      judul: "Kebakaran Hutan di Kalimantan",
       totalDonation: "75.000",
       daysLeft: 15,
-      imageSrc: "/images/image4.png",
-    },
-    {
-      title: "Gempa Bumi di Lombok",
-      totalDonation: "50.000",
-      daysLeft: 10,
-      imageSrc: "/images/image4.png",
-    },
-    {
-      title: "Gempa Bumi di Lombok",
-      totalDonation: "50.000",
-      daysLeft: 10,
-      imageSrc: "/images/image4.png",
+      imageSrc: "./fire.jpg",
+      deskripsi: "Deskripsi singkat tentang aksi Kebakaran Hutan di Kalimantan.",
+      penyelenggara: "Penyelenggara 3",
+      targetDonasi: 100000,
+      progressDonasi: 75000,
+      batasWaktu: "2024-12-31",
     },
   ];
 
@@ -43,7 +49,7 @@ const History = () => {
       {/* Konten Utama */}
       <div className="flex-grow p-6 flex gap-8">
         {/* Rekapitulasi (Kiri) */}
-        <div className="w-[400px] space-y-6">
+        <div className="w-full space-y-6">
           <h2 className="text-2xl font-bold text-blue-600">Rekapitulasi</h2>
 
           {/* Total Donasi */}
@@ -70,18 +76,25 @@ const History = () => {
         </div>
 
         {/* Riwayat (Kanan) */}
-        <div className="w-[1050px]">
+        <div className="w-3/4">
           <h2 className="text-2xl font-bold text-blue-600 mb-4">Riwayat</h2>
 
           {/* Scrollable Donation Cards */}
           <div className="flex overflow-x-auto space-x-6 p-2 hide-scrollbar w-full">
-            {donations.map((donation, index) => (
-              <div key={index} className="flex-shrink-0">
-                <DonationCard
-                  title={donation.title}
-                  totalDonation={donation.totalDonation}
-                  daysLeft={donation.daysLeft}
-                  imageSrc={donation.imageSrc}
+            {donations.map((donation) => (
+              <div
+                key={donation.id}
+                className="flex-shrink-0 w-[380px] h-[350px]"
+              >
+                <DonasiCard
+                  id={donation.id}
+                  judul={donation.judul}
+                  foto={donation.imageSrc}
+                  deskripsi={donation.deskripsi}
+                  penyelenggara={donation.penyelenggara}
+                  targetDonasi={donation.targetDonasi}
+                  progressDonasi={donation.progressDonasi}
+                  batasWaktu={donation.batasWaktu}
                 />
               </div>
             ))}
@@ -92,7 +105,8 @@ const History = () => {
       {/* Footer */}
       <footer className="bg-blue-600 text-white p-6">
         <p>
-          <span className="font-bold">DoNation</span> - Satu Platform, Ribuan Kebaikan. Mulai Donasi Sekarang!
+          <span className="font-bold">DoNation</span> - Satu Platform, Ribuan
+          Kebaikan. Mulai Donasi Sekarang!
         </p>
       </footer>
     </div>
@@ -100,3 +114,4 @@ const History = () => {
 };
 
 export default History;
+
