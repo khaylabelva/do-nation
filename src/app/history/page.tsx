@@ -79,7 +79,7 @@ const History = () => {
       <Navbar />
 
       {/* Konten Utama */}
-      <div className="flex-grow p-6 flex gap-8">
+      <div className="flex-grow p-6 px-12 flex gap-8">
         {/* Rekapitulasi (Kiri) */}
         <div className="w-1/4 space-y-6">
           <h2 className="text-2xl font-bold text-blue-600">Rekapitulasi</h2>
@@ -109,19 +109,22 @@ const History = () => {
 
         {/* Riwayat (Kanan) */}
         <div className="w-3/4">
-          <h2 className="text-2xl font-bold text-blue-600 mb-4">Riwayat</h2>
+          <div className="flex flex-row">
+            <h2 className="text-2xl font-bold text-blue-600 mb-4">Riwayat</h2>
 
-          {/* Dropdown */}
-          <div className="mb-4">
-            <select
-              className="p-2 rounded-md border border-gray-300"
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value as "donasi" | "aksi")}
-            >
-              <option value="donasi">Donasi</option>
-              <option value="aksi">Aksi</option>
-            </select>
+            {/* Dropdown */}
+            <div className="mb-4 ml-4">
+              <select
+                className="p-1 rounded-md border border-gray-300"
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value as "donasi" | "aksi")}
+              >
+                <option value="donasi">Donasi</option>
+                <option value="aksi">Aksi</option>
+              </select>
+            </div>
           </div>
+          
 
           {/* Conditional Rendering */}
           <div className="flex overflow-x-auto space-x-6 p-2 hide-scrollbar w-full"
