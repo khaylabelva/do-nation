@@ -56,7 +56,7 @@ const AksiSection: React.FC = () => {
     <section className="mt-4 mb-4 relative">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Aksi Sosial</h2>
-        <a href="/home/aksisosial" className="text-blue-500 text-sm font-semibold hover:underline">
+        <a href="/homepage/actions" className="text-blue-500 text-sm font-semibold hover:underline">
           Lihat Selengkapnya
         </a>
       </div>

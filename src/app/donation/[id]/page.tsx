@@ -66,7 +66,7 @@ const DonationPage: React.FC = () => {
   return (
     <div className="bg-neutral-50 min-h-screen flex flex-col overflow-hidden">
       <Navbar />
-      <div className="flex-1 flex flex-col items-center justify-center p-8">
+      <div className="flex-1 flex flex-col items-center justify-center p-4">
         <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl gap-16">
           {/* Left Image Section */}
           <div className="w-full md:w-[50%] rounded-[60px] overflow-hidden">
