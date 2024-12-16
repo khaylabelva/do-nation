@@ -28,8 +28,8 @@ model User {
 }
 
 model Session {
-  id        String   @id @default(cuid()) // ID unik untuk session
-  userId    String   @unique // Unik untuk setiap userId
+  id        String @id
+  userId    String   
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id]) // Foreign key
 }

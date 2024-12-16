@@ -4,7 +4,7 @@ import { lucia } from "@/lib/lucia";
 export async function POST() {
   try {
     // Get the session cookie from the request
-    const sessionId = (await cookies()).get("do-nation-cookie")?.value;
+    const sessionId = (await cookies()).get("lucia_session")?.value;
 
     // If no session cookie exists, return success
     if (!sessionId) {
