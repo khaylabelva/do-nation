@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DoNation - History",
+  title: "Create Next App",
 };
 
 export default function RootLayout({
