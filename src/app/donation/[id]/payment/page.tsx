@@ -16,10 +16,36 @@ interface DonationCampaign {
   progressDonasi: number;
 }
 
+type PaymentMethod = {
+  id: number;
+  name: string;
+  image: string;
+};
+
 const PaymentPage: React.FC = () => {
   const params = useParams(); // Get dynamic route parameters
   const [donationCampaign, setDonationCampaign] = useState<DonationCampaign | null>(null);
   const [loading, setLoading] = useState(true); // Loading state
+
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState<PaymentMethod | null>(null);
+
+  const paymentMethods: PaymentMethod[] = [
+    { id: 1, name: "QRIS", image: "./qris.png" },
+    { id: 2, name: "GoPay", image: "./gopay.png" },
+    { id: 3, name: "BCA", image: "./bca.png" },
+    { id: 4, name: "Mandiri", image: "./mandiri.png" },
+  ];
+
+  const togglePaymentModal = () => {
+    setIsPaymentModalOpen(!isPaymentModalOpen);
+  };
+
+  const handlePaymentSelection = (method: PaymentMethod) => {
+    setSelectedPaymentMethod(method);
+    setIsPaymentModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchCampaign = async () => {
@@ -58,9 +84,6 @@ const PaymentPage: React.FC = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      {/* Navbar */}
-      <Navbar />
-
       {/* Main Container */}
       <div className="container mx-auto px-4 py-8 mt-8">
         {/* Header */}
@@ -111,8 +134,24 @@ const PaymentPage: React.FC = () => {
             {/* Pilih Metode Pembayaran */}
             <div className="border border-gray-200 rounded-2xl bg-white p-5 shadow-sm flex justify-between items-center">
               <h3 className="font-semibold text-xl">Pilih Metode Pembayaran</h3>
-              <button className="bg-blue-600 text-white py-1 px-6 rounded-full hover:bg-blue-700 text-sm font-semibold">
-                Pilih
+              <button
+                className={`text-sm font-semibold flex items-center gap-2 ${selectedPaymentMethod ? 'bg-white' : 'bg-blue-500'} ${selectedPaymentMethod ? 'text-gray-800' : 'text-white'} px-7 py-1 rounded-full`}
+                onClick={togglePaymentModal}
+              >
+                {selectedPaymentMethod ? (
+                  <>
+                    <img
+                      src={selectedPaymentMethod.image}
+                      alt={selectedPaymentMethod.name}
+                      className="w-5 h-5 object-contain"
+                    />
+                    <span className="font-medium">
+                      {selectedPaymentMethod.name}
+                    </span>
+                  </>
+                ) : (
+                  "Pilih"
+                )}
               </button>
             </div>
           </div>
@@ -143,6 +182,37 @@ const PaymentPage: React.FC = () => {
             Lanjut Pembayaran
           </button>
         </div>
+
+        {/* Pop-up Metode Pembayaran */}
+        {isPaymentModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-2xl p-6 shadow-lg w-[90%] max-w-md relative">
+              <button
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+                onClick={togglePaymentModal}
+              >
+                ✖
+              </button>
+              <h3 className="font-bold text-xl mb-6 text-center">Pilih Metode Pembayaran</h3>
+              <ul className="space-y-4">
+                {paymentMethods.map((method) => (
+                  <li
+                    key={method.id}
+                    className="flex items-center gap-4 border-b pb-6 cursor-pointer "
+                    onClick={() => handlePaymentSelection(method)}
+                  >
+                    <img
+                      src={method.image}
+                      alt={method.name}
+                      className="w-10 h-10 rounded object-contain"
+                    />
+                    <span className="font-medium text-gray-800">{method.name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

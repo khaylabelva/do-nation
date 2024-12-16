@@ -62,9 +62,9 @@ const AksiSection: React.FC = () => {
       </div>
 
       {/* Carousel Container */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden gap-4">
         <div
-          className="flex transition-transform duration-700 ease-in-out"
+          className="flex transition-transform duration-700 ease-in-out mb-8"
           style={{
             transform: `translateX(-${currentIndex * 100}%)`,
           }}
@@ -78,7 +78,7 @@ const AksiSection: React.FC = () => {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="absolute left-0 right-0 -bottom-12 flex justify-center gap-4">
+      <div className="absolute left-0 right-0 -bottom-12 flex justify-center gap-4 mt-4">
         <button
           onClick={handlePrev}
           className="w-10 h-10 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 flex items-center justify-center"
