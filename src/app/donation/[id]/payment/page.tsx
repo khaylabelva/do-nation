@@ -84,11 +84,11 @@ const PaymentPage: React.FC = () => {
   return (
     <div className="bg-white h-screen overflow-hidden">
       {/* Main Container */}
-      <div className="container mx-auto px-4 py-6 h-full flex flex-col justify-between">
+      <div className="container mx-auto px-4 py-6 h-full flex flex-col">
         {/* Header */}
         <div className="mb-7">
           <BackButton />
-          <div className="mt-4 flex items-center">
+          <div className="mt-16 flex items-center">
             <h1 className="text-3xl font-bold">{judul}</h1>
             <span className="ml-auto text-gray-500 text-lg">{penyelenggara}</span>
           </div>
@@ -112,7 +112,7 @@ const PaymentPage: React.FC = () => {
         </div>
 
         {/* Dua Kolom */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Kolom Kiri */}
           <div className="flex flex-col gap-4">
             {/* Informasi Donatur */}
@@ -173,7 +173,7 @@ const PaymentPage: React.FC = () => {
         {/* Total Donasi dan Tombol Submit */}
         <div className="flex items-center justify-between mt-6 gap-4">
           <div className="flex items-center justify-between border border-gray-200 rounded-2xl bg-white p-5 shadow-sm h-14 w-[500px]">
-            <div className="flex-1 text-left ml-4">
+            <div className="flex-1 text-left  ">
               <p className="text-gray-500 text-[14px]">Total Donasi</p>
             </div>
             <div className="text-blue-600 font-bold text-[24px]">Rp100.000</div>
