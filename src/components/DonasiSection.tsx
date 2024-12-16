@@ -40,7 +40,7 @@ const DonasiSection: React.FC = () => {
   };
 
   return (
-    <section className="my-16 px-4 relative mb-32">
+    <section className="my-16 relative mb-32">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Donasi</h2>
         <a href="/homepage/donations" className="text-blue-500 text-sm font-semibold hover:underline">

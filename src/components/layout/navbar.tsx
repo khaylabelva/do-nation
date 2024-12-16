@@ -37,7 +37,7 @@ const Navbar = () => {
             <h1
               key={link.name}
               onClick={() => router.push(link.path)}
-              className={`cursor-pointer transition-colors duration-200 ${
+              className={`cursor-pointer bg-transparent transition-transform duration-300 transform hover:scale-105 ${
                 pathname === link.path
                   ? 'text-blue-500 underline decoration-blue-500 underline-offset-4'
                   : 'text-gray-800'

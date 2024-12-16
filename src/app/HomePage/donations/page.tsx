@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import DonasiCard from "../../../components/DonasiCard";
 import Navbar from "@/components/layout/navbar";
 import { getDonations } from "@/lib/api"; // Import fungsi getDonations
+import BackButton from "@/components/ui/backbutton";
 
 const DonationsPage: React.FC = () => {
   interface Donation {
@@ -46,9 +47,9 @@ const DonationsPage: React.FC = () => {
       {/* Navbar */}
       <Navbar />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pb-8 pt-4">
         
-
+        <BackButton/>
         {/* Search Bar */}
         <div className="flex justify-center mt-8 mb-10">
           <div className="relative w-1/2">
@@ -63,13 +64,7 @@ const DonationsPage: React.FC = () => {
         </div>
 
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
-          <button
-            onClick={() => window.history.back()}
-            className="text-blue-500 font-semibold hover:underline flex items-center"
-          >
-            ← Kembali
-          </button>
+        <div className="flex flex-col gap-4 mb-6">
           <h1 className="text-4xl font-bold">Donasi</h1>
         </div>
 

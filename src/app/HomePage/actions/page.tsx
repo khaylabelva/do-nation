@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import AksiCard from "../../../components/AksiCard";
 import Navbar from "@/components/layout/navbar";
 import { getActions } from "@/lib/api"; // Path sesuai lokasi file
+import BackButton from "@/components/ui/backbutton";
 
 interface Aksi {
   id: number;
@@ -52,7 +53,7 @@ const ActionsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pb-8 pt-4">
         <Navbar />
         <p className="text-center text-gray-500 mt-8">Memuat data...</p>
       </div>
@@ -63,9 +64,7 @@ const ActionsPage: React.FC = () => {
     <>
       <Navbar />
       <div className="container mx-auto px-4 py-8">
-        {/* Navbar */}
-        
-
+        <BackButton/>
         {/* Search Bar */}
         <div className="flex justify-center mt-8 mb-10">
           <div className="relative w-1/2">
@@ -80,13 +79,7 @@ const ActionsPage: React.FC = () => {
         </div>
 
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
-          <button
-            onClick={() => window.history.back()}
-            className="text-blue-500 font-semibold hover:underline flex items-center"
-          >
-            ← Kembali
-          </button>
+        <div className="flex flex-col gap-4 mb-6">
           <h1 className="text-4xl font-bold">Aksi Sosial</h1>
         </div>
 
