@@ -1,8 +1,13 @@
+'use client'
+
+import { useState } from "react";
 import Navbar from "@/components/layout/navbar";
 import DonasiCard from "@/components/DonasiCard";
+import AksiCard from "@/components/AksiCard";
 
-/* page.tsx */
 const History = () => {
+  const [selectedType, setSelectedType] = useState<"donasi" | "aksi">("donasi");
+
   const donations = [
     {
       id: 1,
@@ -42,6 +47,33 @@ const History = () => {
     },
   ];
 
+  const actions = [
+    {
+      id: 1,
+      judul: "Kegiatan Bersih Sungai",
+      foto: "./flood.jpg",
+      deskripsi: "Aksi lingkungan untuk kebersihan sungai.",
+      penyelenggara: "Organisasi Lingkungan",
+      targetAksi: 200,
+      progressAksi: 150,
+      jumlahAksi: 150,
+      konversi: 1500000,
+      batasWaktu: "2024-12-31",
+    },
+    {
+      id: 2,
+      judul: "Donor Darah Massal",
+      foto: "./papua.jpg",
+      deskripsi: "Aksi kesehatan untuk ketersediaan darah.",
+      penyelenggara: "Palang Merah",
+      targetAksi: 100,
+      progressAksi: 80,
+      jumlahAksi: 80,
+      konversi: 800000,
+      batasWaktu: "2024-12-31",
+    },
+  ];
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 overflow-hidden">
       <Navbar />
@@ -49,7 +81,7 @@ const History = () => {
       {/* Konten Utama */}
       <div className="flex-grow p-6 flex gap-8">
         {/* Rekapitulasi (Kiri) */}
-        <div className="w-full space-y-6">
+        <div className="w-1/4 space-y-6">
           <h2 className="text-2xl font-bold text-blue-600">Rekapitulasi</h2>
 
           {/* Total Donasi */}
@@ -79,25 +111,61 @@ const History = () => {
         <div className="w-3/4">
           <h2 className="text-2xl font-bold text-blue-600 mb-4">Riwayat</h2>
 
-          {/* Scrollable Donation Cards */}
-          <div className="flex overflow-x-auto space-x-6 p-2 hide-scrollbar w-full">
-            {donations.map((donation) => (
-              <div
-                key={donation.id}
-                className="flex-shrink-0 w-[380px] h-[350px]"
-              >
-                <DonasiCard
-                  id={donation.id}
-                  judul={donation.judul}
-                  foto={donation.imageSrc}
-                  deskripsi={donation.deskripsi}
-                  penyelenggara={donation.penyelenggara}
-                  targetDonasi={donation.targetDonasi}
-                  progressDonasi={donation.progressDonasi}
-                  batasWaktu={donation.batasWaktu}
-                />
-              </div>
-            ))}
+          {/* Dropdown */}
+          <div className="mb-4">
+            <select
+              className="p-2 rounded-md border border-gray-300"
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value as "donasi" | "aksi")}
+            >
+              <option value="donasi">Donasi</option>
+              <option value="aksi">Aksi</option>
+            </select>
+          </div>
+
+          {/* Conditional Rendering */}
+          <div className="flex overflow-x-auto space-x-6 p-2 hide-scrollbar w-full"
+          style={{
+            msOverflowStyle: "none",
+            scrollbarWidth: "none",
+          }}>
+            {selectedType === "donasi"
+              ? donations.map((donation) => (
+                  <div
+                    key={donation.id}
+                    className="flex-shrink-0 w-[380px] h-[350px]"
+                  >
+                    <DonasiCard
+                      id={donation.id}
+                      judul={donation.judul}
+                      foto={donation.imageSrc}
+                      deskripsi={donation.deskripsi}
+                      penyelenggara={donation.penyelenggara}
+                      targetDonasi={donation.targetDonasi}
+                      progressDonasi={donation.progressDonasi}
+                      batasWaktu={donation.batasWaktu}
+                    />
+                  </div>
+                ))
+              : actions.map((action) => (
+                  <div
+                    key={action.id}
+                    className="flex-shrink-0 w-[600px] h-[172px]"
+                  >
+                    <AksiCard
+                      id={action.id}
+                      judul={action.judul}
+                      foto={action.foto}
+                      deskripsi={action.deskripsi}
+                      penyelenggara={action.penyelenggara}
+                      targetAksi={action.targetAksi}
+                      progressAksi={action.progressAksi}
+                      jumlahAksi={action.jumlahAksi}
+                      konversi={action.konversi}
+                      batasWaktu={action.batasWaktu}
+                    />
+                  </div>
+                ))}
           </div>
         </div>
       </div>
@@ -114,4 +182,3 @@ const History = () => {
 };
 
 export default History;
-

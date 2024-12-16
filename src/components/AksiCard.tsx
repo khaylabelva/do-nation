@@ -31,7 +31,7 @@ const AksiCard: React.FC<AksiCardProps> = ({
 
   return (
     <div
-      className="flex bg-white border border-gray-400 rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-shadow "
+      className="flex h-full bg-white border border-gray-400 rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-shadow "
       onClick={onClick} // Call onClick function
     >
       {/* Image */}
