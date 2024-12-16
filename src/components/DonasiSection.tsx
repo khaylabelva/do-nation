@@ -1,77 +1,49 @@
 "use client";
 
-import { useState } from "react";
 import DonasiCard from "./DonasiCard";
+import { useState, useEffect } from "react";
+import { getDonationsSection } from "@/lib/api"; // Import fungsi getDonations
 
 const DonasiSection: React.FC = () => {
-  const dummyData = [
-    {
-      id: 1,
-      judul: "Banjir Bandang di Palu",
-      foto: "/HeroSectionImage.jpg",
-      deskripsi: "Bantu korban banjir bandang yang membutuhkan uluran tangan kita.",
-      penyelenggara: "Relawan Palu",
-      targetDonasi: 20000000,
-      progressDonasi: 12000000,
-      batasWaktu: new Date("2024-12-31"),
-    },
-    {
-      id: 2,
-      judul: "Pendidikan untuk Anak Indonesia",
-      foto: "/HeroSectionImage.jpg",
-      deskripsi: "Bantu anak-anak Indonesia mendapatkan pendidikan yang layak.",
-      penyelenggara: "Yayasan Cerdas",
-      targetDonasi: 30000000,
-      progressDonasi: 15000000,
-      batasWaktu: new Date("2024-11-30"),
-    },
-    {
-      id: 3,
-      judul: "Gempa Bumi Cianjur",
-      foto: "/HeroSectionImage.jpg",
-      deskripsi: "Bantu pemulihan masyarakat terdampak gempa bumi di Cianjur.",
-      penyelenggara: "Relawan Peduli",
-      targetDonasi: 10000000,
-      progressDonasi: 7000000,
-      batasWaktu: new Date("2024-10-31"),
-    },
-    {
-      id: 4,
-      judul: "Donasi Buku Sekolah",
-      foto: "/HeroSectionImage.jpg",
-      deskripsi: "Bantu anak-anak dengan donasi buku sekolah.",
-      penyelenggara: "Yayasan Buku",
-      targetDonasi: 15000000,
-      progressDonasi: 9000000,
-      batasWaktu: new Date("2024-09-15"),
-    },
-    {
-      id: 5,
-      judul: "Pembangunan Sekolah",
-      foto: "/HeroSectionImage.jpg",
-      deskripsi: "Bangun sekolah untuk anak-anak di pedesaan.",
-      penyelenggara: "BuildSchool",
-      targetDonasi: 25000000,
-      progressDonasi: 18000000,
-      batasWaktu: new Date("2024-08-31"),
-    },
-  ];
-
+  interface Donation {
+    id: number;
+    judul: string;
+    foto: string;
+    deskripsi: string;
+    penyelenggara: string;
+    targetDonasi: number;
+    progressDonasi: number;
+    batasWaktu: string;
+  }
+  
+  const [donations, setDonations] = useState<Donation[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Fetch data dari database saat komponen pertama kali dimuat
+  useEffect(() => {
+    const fetchDonations = async () => {
+      const data = await getDonationsSection();
+      setDonations(data);
+    };
+
+    fetchDonations();
+  }, []);
+
+  // Fungsi untuk navigasi carousel ke kanan
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % Math.ceil(dummyData.length / 3));
+    setCurrentIndex((prev) => (prev + 1) % Math.ceil(donations.length / 3));
   };
 
+  // Fungsi untuk navigasi carousel ke kiri
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + Math.ceil(dummyData.length / 3)) % Math.ceil(dummyData.length / 3));
+    setCurrentIndex((prev) => (prev - 1 + Math.ceil(donations.length / 3)) % Math.ceil(donations.length / 3));
   };
 
   return (
     <section className="mt-16 px-4 relative">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Donasi</h2>
-        <a href="/HomePage/donasi" className="text-blue-500 text-sm font-semibold hover:underline">
+        <a href="/home/donasi" className="text-blue-500 text-sm font-semibold hover:underline">
           Lihat Selengkapnya
         </a>
       </div>
@@ -84,7 +56,7 @@ const DonasiSection: React.FC = () => {
             transform: `translateX(-${currentIndex * 100}%)`,
           }}
         >
-          {dummyData.map((item) => (
+          {donations.map((item) => (
             <div key={item.id} className="w-1/3 flex-shrink-0 p-2 h-full items-stretch">
               <DonasiCard {...item} />
             </div>

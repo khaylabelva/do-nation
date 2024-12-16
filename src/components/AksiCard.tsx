@@ -7,7 +7,7 @@ interface AksiCardProps {
     targetAksi: number;
     progressAksi: number;
     jumlahAksi: number;
-    batasWaktu: Date;
+    batasWaktu: string;
     konversi: number;
     onClick?: () => void; // Fungsi untuk navigasi
   }
@@ -64,7 +64,7 @@ interface AksiCardProps {
               <span>
                 {Math.max(
                   0,
-                  Math.ceil((batasWaktu.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+                  Math.ceil((new Date(batasWaktu).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
                 )}{" "}
                 Hari Tersisa
               </span>
