@@ -33,37 +33,51 @@ const DonasiCard: React.FC<DonasiCardProps> = ({
     router.push(`/donation/${id}`); // Navigasi ke halaman donasi/{id}
   };
 
+  const calculateDaysLeft = () => {
+    const daysLeft = Math.ceil(
+      (new Date(batasWaktu).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+    );
+    return Math.max(daysLeft, 0); // Avoid negative days
+  };
+
   return (
     <div
       onClick={handleCardClick}
-      className="shadow-md rounded-lg overflow-hidden flex flex-col h-full cursor-pointer hover:shadow-lg transition-shadow"
+      className="rounded-2xl border border-gray-400 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
     >
-      <img src={foto} alt={judul} className="w-full h-40 object-cover" />
-      <div className="p-4 flex flex-col flex-grow">
-        <h3 className="font-bold mb-1">{judul}</h3>
-        <p className="text-gray-600 text-sm flex-grow">{deskripsi}</p>
-        <p className="text-sm text-gray-700 mt-2">
-          Penyelenggara: <span className="font-semibold">{penyelenggara}</span>
-        </p>
-        <div className="mt-2">
-          <div className="w-full bg-gray-200 h-2.5 rounded-full">
+      {/* Image Section */}
+      <div className="h-[200px] w-full">
+        <img
+          src={foto || "/placeholder.jpg"}
+          alt={judul}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Content Section */}
+      <div className="p-4">
+        <p className="text-xs text-gray-400 mb-1">{penyelenggara}</p>
+        <h3 className="font-bold text-gray-800 mb-4">{judul}</h3>
+
+        {/* Progress Bar */}
+        <div className="mb-3">
+          <div className="w-full h-2 bg-gray-300 rounded-full">
             <div
-              className="bg-blue-500 h-2.5 rounded-full"
+              className="h-full bg-blue-500 rounded-full"
               style={{ width: `${(progressDonasi / targetDonasi) * 100}%` }}
             ></div>
           </div>
-          <div className="flex justify-between mt-1 text-sm">
-            <span>
-              Rp{formatNumber(progressDonasi)} / Rp{formatNumber(targetDonasi)}
+        </div>
+
+        {/* Donation Info and Days Left */}
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-600 font-medium">
+            Total Donasi:{" "}
+            <span className="font-bold text-gray-800">
+              Rp{formatNumber(progressDonasi)}
             </span>
-            <span>
-              {Math.max(
-                0,
-                Math.ceil((new Date(batasWaktu).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-              )}{" "}
-              Hari Tersisa
-            </span>
-          </div>
+          </span>
+          <span className="text-gray-500">{calculateDaysLeft()} hari lagi</span>
         </div>
       </div>
     </div>

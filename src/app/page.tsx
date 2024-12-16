@@ -1,29 +1,26 @@
-import Navbar from "@/components/layout/navbar";
+'use client';
+
+import { useEffect, useState } from 'react';
+import Navbar from '@/components/layout/navbar';
+import DonasiCard from '@/components/DonasiCard'; // Import DonasiCard component
 
 export default function HomePage() {
-  const donations = [
-    {
-      title: "Banjir Bandang di Palu",
-      totalDonation: "Rp25.000.000",
-      daysLeft: 7,
-      imageSrc: "./flood.jpg",
-      progress: "30%",
-    },
-    {
-      title: "Gempa Bumi di Lombok",
-      totalDonation: "Rp50.000.000",
-      daysLeft: 10,
-      imageSrc: "./earthquake.jpg",
-      progress: "55%",
-    },
-    {
-      title: "Kebakaran Hutan di Kalimantan",
-      totalDonation: "Rp75.000.000",
-      daysLeft: 15,
-      imageSrc: "./fire.jpg",
-      progress: "70%",
-    },
-  ];
+  const [donations, setDonations] = useState<any[]>([]); // State to hold fetched data
+
+  useEffect(() => {
+    async function fetchDonations() {
+      try {
+        const response = await fetch('/api/donations'); // Fetch data from the API
+        if (!response.ok) throw new Error('Failed to fetch donations');
+        const data = await response.json();
+        setDonations(data);
+      } catch (error) {
+        console.error('Error fetching donations:', error);
+      }
+    }
+    fetchDonations();
+  }, []);
+
   return (
     <div className="font-sans">
       <Navbar />
@@ -63,7 +60,7 @@ export default function HomePage() {
           { 
             image: "/icon-3.png", 
             title: "Terhubung Hingga ke Penjuru Dunia", 
-            desc: "Bangun jaringan solidaritas yang kuat untuk mendukung tujuan mulia Anda. Ajak lebih banyak orang untuk berpartisipasi dan bergerak bersama di komunitas lokal maupun global." 
+            desc: "Bangun jaringan solidaritas yang kuat untuk mendukung tujuan mulia Anda. Ajak lebih banyak orang untuk berpartisipasi bersama di komunitas lokal dan global." 
           },
         ].map((item, index) => (
           <div 
@@ -96,52 +93,28 @@ export default function HomePage() {
           Ayo Bertindak <span className="text-blue-500">Sekarang!</span>
         </h2>
         <p className="text-gray-400 mt-2 mb-8 mx-auto font-normal">
-        Waktu tak menunggu. Bersama, kita bisa membuat perbedaan. Berikan donasi Anda dan lihat dampaknya langsung. Setiap detik berarti!
+          Waktu tak menunggu. Bersama, kita bisa membuat perbedaan. Berikan donasi Anda dan lihat dampaknya langsung. Setiap detik berarti!
         </p>
-        {/* Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {donations.map((donation, index) => (
-            <div
-              key={index}
-              className="rounded-2xl border border-gray-400 bg-white overflow-hidden"
-            >
-              {/* Image */}
-              <div className="h-[200px] w-full">
-                <img
-                  src={donation.imageSrc}
-                  alt={donation.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Card Content */}
-              <div className="p-4">
-                <p className="text-xs text-gray-400 mb-1">Unity Foundation</p>
-                <h3 className="font-bold text-gray-800 mb-4">{donation.title}</h3>
-
-                {/* Progress Bar */}
-                <div className="mb-3">
-                  <div className="w-full h-2 bg-gray-300 rounded-full">
-                    <div
-                      className="h-full bg-blue-500 rounded-full"
-                      style={{ width: donation.progress }}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* Total Donasi and Days Left */}
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600 font-medium">
-                    Total Donasi:{" "}
-                    <span className="font-bold text-gray-800">
-                      {donation.totalDonation}
-                    </span>
-                  </span>
-                  <span className="text-gray-500">{donation.daysLeft} days left</span>
-                </div>
-              </div>
-            </div>
-          ))}
+          {donations.length > 0 ? (
+            donations.map((donation) => (
+              <DonasiCard
+                key={donation.id}
+                id={donation.id}
+                judul={donation.judul}
+                foto={donation.foto}
+                deskripsi={donation.deskripsi}
+                penyelenggara={donation.penyelenggara}
+                targetDonasi={donation.targetDonasi}
+                progressDonasi={donation.progressDonasi}
+                batasWaktu={donation.batasWaktu}
+              />
+            ))
+          ) : (
+            <p className="text-center text-gray-500 col-span-3">
+              Data donasi tidak tersedia saat ini.
+            </p>
+          )}
         </div>
       </section>
 
@@ -151,7 +124,7 @@ export default function HomePage() {
         <p className="text-gray-400 mt-2 mb-16">
           Kami di sini untuk membantu Anda memulai perjalanan kebaikan. Temukan jawabannya di sini!
         </p>
-        <div className="max-w-3xl mx-auto divide-y divide-gray-200">
+        <div className="max-w-full mx-auto divide-y divide-gray-200">
           {[
             "Bagaimana Cara Saya Berdonasi?",
             "Bisakah Saya Berdonasi untuk Mengenang Seseorang?",
@@ -179,18 +152,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer Section */}
+      {/* Footer */}
       <footer className="bg-blue-600 text-white mt-16 py-8 rounded-2xl w-11/12 mx-auto shadow-lg mb-8">
         <div className="container mx-auto flex justify-between px-6">
-          {/* Kolom Kiri */}
           <div className="w-2/5">
             <h3 className="font-bold text-xl mb-2">DoNation</h3>
             <p className="text-sm leading-relaxed text-gray-200">
               Satu Platform, Ribuan Kebaikan. Mulai Donasi Sekarang!
             </p>
           </div>
-
-          {/* Kolom Kanan */}
           <div className="w-3/5 flex justify-end space-x-16">
             {/* Donasi */}
             <div>
@@ -211,17 +181,6 @@ export default function HomePage() {
                 <li>Kebijakan Privasi</li>
                 <li>Aksesibilitas</li>
                 <li>Hubungi Kami</li>
-              </ul>
-            </div>
-
-            {/* Tentang */}
-            <div>
-              <h4 className="font-bold text-base mb-2">Tentang DoNation</h4>
-              <ul className="space-y-1 text-[13px] text-gray-200">
-                <li>Tentang Kami</li>
-                <li>Harga</li>
-                <li>Karier</li>
-                <li>Layanan</li>
               </ul>
             </div>
           </div>

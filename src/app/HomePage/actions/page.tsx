@@ -83,7 +83,7 @@ const AksiSosialPage: React.FC = () => {
             key={item.id}
             className="transition-transform hover:scale-105"
           >
-            <AksiCard {...item} />
+            <AksiCard {...item} batasWaktu={item.batasWaktu.toISOString()} />
           </a>
         ))}
       </div>

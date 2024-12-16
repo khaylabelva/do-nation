@@ -118,7 +118,7 @@ const DonasiPage: React.FC = () => {
             key={item.id}
             className="transition-transform hover:scale-105"
           >
-            <DonasiCard {...item} />
+            <DonasiCard {...item} batasWaktu={item.batasWaktu.toISOString()} />
           </a>
         ))}
       </div>
