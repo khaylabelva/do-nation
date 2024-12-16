@@ -32,10 +32,10 @@ const PaymentPage: React.FC = () => {
     useState<PaymentMethod | null>(null);
 
   const paymentMethods: PaymentMethod[] = [
-    { id: 1, name: "QRIS", image: "./qris.png" },
-    { id: 2, name: "GoPay", image: "./gopay.png" },
-    { id: 3, name: "BCA", image: "./bca.png" },
-    { id: 4, name: "Mandiri", image: "./mandiri.png" },
+    { id: 1, name: "QRIS", image: "/qris.png" },
+    { id: 2, name: "GoPay", image: "/gopay.png" },
+    { id: 3, name: "BCA", image: "/bca.png" },
+    { id: 4, name: "Mandiri", image: "/mandiri.png" },
   ];
 
   const togglePaymentModal = () => {
