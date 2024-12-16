@@ -35,6 +35,7 @@ const Navbar = () => {
         if (res.ok) {
           const data = await res.json();
           setUser(data.user); // Set user data if session exists
+
         }
       } catch (error) {
         console.error('Failed to fetch user session', error);

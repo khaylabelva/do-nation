@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react'; // Icons for the eye toggle
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { signIn } from '../api/auth/signin/route';
 
 export const signInSchema = z.object({
   email: z.string().email(),
@@ -42,33 +43,16 @@ const SignInForm = () => {
     setShowPassword((prev) => !prev);
   };
 
-  // Submit handler
   async function onSubmit(values: z.infer<typeof signInSchema>) {
-    try {
-      const res = await fetch('/api/auth/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        toast.error(data.error || 'Failed to sign in');
-        return;
-      }
-
-      // Success: Redirect to dashboard or home page
-      toast.success('Login successful! Redirecting...');
-      router.push('/'); // Change the route if needed
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('Something went wrong. Please try again.');
+    const res = await signIn(values)
+    if (res.success) {
+        toast.success('Login successful')
+        router.push('/')
+    } else {
+        toast.error(res.error)
     }
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
   }
 
   return (

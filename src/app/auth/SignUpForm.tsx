@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react'; // Icons for the toggle button
 import { toast } from 'sonner';
+import { signUp } from '../api/auth/signup/route';
 
 export const signUpSchema = z.object({
   username: z.string().min(5, 'Username must be at least 5 characters'),
@@ -45,33 +46,19 @@ const SignUpForm = () => {
   };
 
   // Submit handler
+  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
-    try {
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: values.username, // Ensure 'name' aligns with the API field
-          email: values.email,
-          password: values.password,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.error || 'Failed to create account');
-      } else {
-        toast.success('Account created successfully!');
-        router.push('/'); // Redirect to home/dashboard
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('Something went wrong. Please try again.');
+    console.log(values)
+    const res = await signUp(values)
+    if (res.success) {
+        toast.success('Account created successfully')
+        router.push('/')
+    } else {
+        toast.error(res.error)
     }
-  }
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+}
 
   return (
     <Card className="min-w-[440px] bg-white backdrop-blur-sm text-black rounded-3xl shadow-none">

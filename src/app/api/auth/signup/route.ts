@@ -1,48 +1,42 @@
+'use server'
+
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
+import { Argon2id } from 'oslo/password';
+import { lucia } from '@/lib/lucia';
+import { cookies } from 'next/headers';
+import { z } from "zod"
+import { signUpSchema } from "@/app/auth/SignUpForm"
 
 const prisma = new PrismaClient();
 
-export async function POST(req: Request) {
+export const signUp = async (values: z.infer<typeof signUpSchema>) => {
   try {
-    const { name, email, password } = await req.json();
+      // if user already exists, throw an error
+      const existingUser = await prisma.user.findUnique({
+          where: {
+              email: values.email
+          }
+      })
+      if (existingUser) {
+          return { error: 'User already exists', success: false }
+      }
 
-    // Input validation
-    if (!name || !email || !password) {
-      return new Response(JSON.stringify({ error: 'All fields are required' }), {
-        status: 400,
-      });
-    }
+      const hashedPassword = await new Argon2id().hash(values.password)
 
-    // Check if the user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
-    if (existingUser) {
-      return new Response(JSON.stringify({ error: 'User already exists' }), {
-        status: 409,
-      });
-    }
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create the user
-    const newUser = await prisma.user.create({
-      data: {
-        username: name,
-        email,
-        password: hashedPassword,
-      },
-    });
-
-    return new Response(JSON.stringify({ message: 'User created successfully', user: newUser }), {
-      status: 201,
-    });
-  } catch (error) {
-    console.error('Error in signup route:', error);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
-      status: 500,
-    });
-  }
+      const user = await prisma.user.create({
+          data: {
+              email: values.email.toLowerCase(),
+              username: values.username,
+              password: hashedPassword
+          }
+      })
+      const session = await lucia.createSession(user.id, {})
+      const sessionCookie = await lucia.createSessionCookie(session.id)
+      ;(await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+      return { success: true }
+  } catch(error)  {
+      const err = error as Error
+      console.error(error) 
+      return { success: false, error: err.stack }
+  }   
 }

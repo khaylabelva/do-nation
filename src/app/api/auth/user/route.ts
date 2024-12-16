@@ -16,7 +16,6 @@ export async function GET() {
     return new Response(
       JSON.stringify({
         user: {
-          id: user.id,
           username: user.username,
           email: user.email,
         },

@@ -1,65 +1,30 @@
+'use server'
+
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
+import { z } from "zod"
+import { signInSchema } from "@/app/auth/SignInForm"
+import { Argon2id } from 'oslo/password'
 import { lucia } from '@/lib/lucia';
 import { cookies } from 'next/headers';
 
 const prisma = new PrismaClient();
 
-export async function POST(req: Request) {
-  try {
-    const { email, password } = await req.json();
-
-    // Validate input
-    if (!email || !password) {
-      return new Response(JSON.stringify({ error: 'All fields are required' }), {
-        status: 400,
-      });
-    }
-
-    // Find user by email
-    const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() },
-    });
-
-    if (!user || !user.password) {
-      return new Response(JSON.stringify({ error: 'Invalid email or password' }), {
-        status: 401,
-      });
-    }
-
-    // Validate the password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return new Response(JSON.stringify({ error: 'Invalid email or password' }), {
-        status: 401,
-      });
-    }
-
-    // Create a session using Lucia Auth
-    const session = await lucia.createSession(user.id, {});
-    const sessionCookie = await lucia.createSessionCookie(session.id);
-
-    // Set the session cookie in the response
-    (await
-      // Set the session cookie in the response
-      cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
-
-    // Return success response
-    return new Response(
-      JSON.stringify({
-        message: 'Sign in successful',
-        user: {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-        },
-      }),
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Error in sign-in route:', error);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
-      status: 500,
-    });
+export const signIn = async (values: z.infer<typeof signInSchema>) => {
+  const user = await prisma.user.findUnique({
+      where: {
+          email: values.email
+      }
+  })
+  if (!user || !user.password) {
+      return { success: false, error: "Invalid Credentials!" }
   }
+  const passwordMatch = await new Argon2id().verify(user.password, values.password)
+  if (!passwordMatch) {
+      return { success: false, error: "Invalid Credentials!" }
+  }
+
+  const session = await lucia.createSession(user.id, {})
+  const sessionCookie = await lucia.createSessionCookie(session.id)
+  ;(await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+  return { success: true }
 }
