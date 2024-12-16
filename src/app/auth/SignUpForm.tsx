@@ -20,9 +20,9 @@ import { Eye, EyeOff } from 'lucide-react'; // Icons for the toggle button
 import { toast } from 'sonner';
 
 export const signUpSchema = z.object({
-  name: z.string().min(5),
-  email: z.string().email(),
-  password: z.string().min(8),
+  username: z.string().min(5, 'Username must be at least 5 characters'),
+  email: z.string().email('Invalid email format'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
 });
 
 const SignUpForm = () => {
@@ -30,7 +30,7 @@ const SignUpForm = () => {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      name: '',
+      username: '',
       email: '',
       password: '',
     },
@@ -53,7 +53,7 @@ const SignUpForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: values.name,
+          name: values.username, // Ensure 'name' aligns with the API field
           email: values.email,
           password: values.password,
         }),
@@ -65,7 +65,7 @@ const SignUpForm = () => {
         toast.error(data.error || 'Failed to create account');
       } else {
         toast.success('Account created successfully!');
-        router.push('/'); // Redirect to login page
+        router.push('/'); // Redirect to home/dashboard
       }
     } catch (error) {
       console.error('Error:', error);
@@ -85,7 +85,7 @@ const SignUpForm = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="Email Anda" {...field} />
+                    <Input type="email" placeholder="Your Email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -93,12 +93,12 @@ const SignUpForm = () => {
             />
             <FormField
               control={form.control}
-              name="name"
+              name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Username Anda" {...field} />
+                    <Input placeholder="Your Username" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

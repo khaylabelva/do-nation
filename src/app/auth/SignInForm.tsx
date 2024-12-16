@@ -15,7 +15,7 @@ import {
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Eye, EyeOff } from 'lucide-react'; // Icons for eye toggle
+import { Eye, EyeOff } from 'lucide-react'; // Icons for the eye toggle
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -56,14 +56,15 @@ const SignInForm = () => {
         }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
+        const data = await res.json();
         toast.error(data.error || 'Failed to sign in');
-      } else {
-        toast.success('Login successful!');
-        router.push('/'); // Redirect to dashboard or home page
+        return;
       }
+
+      // Success: Redirect to dashboard or home page
+      toast.success('Login successful! Redirecting...');
+      router.push('/'); // Change the route if needed
     } catch (error) {
       console.error('Error:', error);
       toast.error('Something went wrong. Please try again.');
@@ -75,6 +76,7 @@ const SignInForm = () => {
       <CardContent className="space-y-2 mt-8">
         <Form {...form}>
           <form className="flex flex-col gap-8" onSubmit={form.handleSubmit(onSubmit)}>
+            {/* Email Field */}
             <FormField
               control={form.control}
               name="email"
@@ -93,6 +95,8 @@ const SignInForm = () => {
                 </FormItem>
               )}
             />
+
+            {/* Password Field */}
             <FormField
               control={form.control}
               name="password"
@@ -120,6 +124,8 @@ const SignInForm = () => {
                 </FormItem>
               )}
             />
+
+            {/* Submit Button */}
             <Button
               type="submit"
               className="self-start mt-1 bg-[#4C84F6] text-white rounded-3xl w-full font-semibold text-xl h-12"
