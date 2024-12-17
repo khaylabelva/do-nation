@@ -64,15 +64,18 @@ model CampaignAksi {
 }
 
 model UserDonasi {
-  id             Int            @id @default(autoincrement())
-  jumlah         Int          
-  metodePembayaran String   
+  id             Int            @default(autoincrement()) // Unique ID for each record
   userId         String
+  campaignId     Int
+  jumlah         Int
+  metodePembayaran String
   user           User           @relation(fields: [userId], references: [id])
   campaign       CampaignDonasi @relation(fields: [campaignId], references: [id])
-  campaignId     Int
   createdAt      DateTime       @default(now())
+
+  @@id([id, userId, campaignId]) // Composite primary key
 }
+
 
 model Aksi {
   campaignId Int    
@@ -84,12 +87,15 @@ model Aksi {
 }
 
 model UserAksi {
-  id             Int           @id @default(autoincrement())
-  fotoDokumentasi String       
+  id             Int            @default(autoincrement()) // Unique ID for each record
   userId         String
-  user           User          @relation(fields: [userId], references: [id])
-  campaign       CampaignAksi  @relation(fields: [campaignId], references: [id])
   campaignId     Int
-  verified       Boolean       @default(false) 
-  createdAt      DateTime      @default(now())
+  fotoDokumentasi String
+  verified       Boolean        @default(false)
+  user           User           @relation(fields: [userId], references: [id])
+  campaign       CampaignAksi   @relation(fields: [campaignId], references: [id])
+  createdAt      DateTime       @default(now())
+
+  @@id([id, userId, campaignId]) // Composite primary key
 }
+

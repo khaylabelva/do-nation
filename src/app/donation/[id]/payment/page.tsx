@@ -1,9 +1,11 @@
+// src/app/donation/[id]/payment/page.tsx
 "use client";
 
 import BackButton from "@/components/ui/backbutton";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getDonationCampaignById } from "@/lib/api";
+import { toast } from "sonner";
 
 interface DonationCampaign {
   id: number;
@@ -25,6 +27,7 @@ const PaymentPage: React.FC = () => {
   const params = useParams(); // Get dynamic route parameters
   const [donationCampaign, setDonationCampaign] = useState<DonationCampaign | null>(null);
   const [loading, setLoading] = useState(true); // Loading state
+  const [nominalDonasi, setNominalDonasi] = useState("10000");
 
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
@@ -37,6 +40,12 @@ const PaymentPage: React.FC = () => {
     { id: 4, name: "Mandiri", image: "/mandiri.png" },
   ];
 
+  const formatNumberWithDots = (value: string) => {
+    const numericValue = value.replace(/\D/g, "");
+    return new Intl.NumberFormat("id-ID").format(Number(numericValue));
+  };
+  
+
   const togglePaymentModal = () => {
     setIsPaymentModalOpen(!isPaymentModalOpen);
   };
@@ -45,6 +54,42 @@ const PaymentPage: React.FC = () => {
     setSelectedPaymentMethod(method);
     setIsPaymentModalOpen(false);
   };
+
+  const handleSubmitDonation = async () => {
+    if (!donationCampaign) {
+      toast.error("Donation campaign data is not available.");
+      return;
+    }
+  
+    try {
+      const res = await fetch("/api/donations/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          campaignId: donationCampaign.id,
+          jumlah: parseInt(nominalDonasi.replace(/\D/g, ""), 10), // Clean input value
+          metodePembayaran: selectedPaymentMethod?.name || "Unknown",
+        }),
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        console.error(data.error || "Failed to record donation");
+        toast.error("Failed to record donation. Please try again.");
+      } else {
+        toast.success("Donation recorded successfully!");
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.error("Error submitting donation:", error);
+      toast.error("An error occurred. Please try again.");
+    }
+  };
+  
+  
 
   useEffect(() => {
     const fetchCampaign = async () => {
@@ -103,11 +148,12 @@ const PaymentPage: React.FC = () => {
             <div className="flex items-center justify-center bg-blue-600 text-white rounded-full w-9 h-9 text-lg ml-4 font-bold">
               Rp
             </div>
-            <div>
+            <div className="flex-grow">
               <input
                 type="text"
-                defaultValue="100.000"
-                className="ml-4 text-black font-bold text-2xl bg-transparent border-none outline-none w-[130px]"
+                value={nominalDonasi}
+                onChange={(e) => setNominalDonasi(formatNumberWithDots(e.target.value))}
+                className="mr-4 text-black font-bold text-2xl bg-transparent border-none outline-none w-full text-right overflow-hidden"
               />
             </div>
           </div>
@@ -178,10 +224,13 @@ const PaymentPage: React.FC = () => {
             <div className="flex-1 text-left  ">
               <p className="text-gray-500 text-[14px]">Total Donasi</p>
             </div>
-            <div className="text-blue-600 font-bold text-[24px]">Rp100.000</div>
+            <div className="text-blue-600 font-bold text-[24px]">Rp{nominalDonasi}</div>
           </div>
 
-          <button className="bg-blue-600 text-white h-14 px-12 rounded-2xl text-xl font-semibold hover:bg-blue-700 flex-grow">
+          <button
+            className="bg-blue-600 text-white h-14 px-12 rounded-2xl text-xl font-semibold hover:bg-blue-700 flex-grow"
+            onClick={handleSubmitDonation}
+          >
             Lanjut Pembayaran
           </button>
         </div>
