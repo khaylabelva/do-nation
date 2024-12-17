@@ -1,4 +1,3 @@
-// components/Navbar.tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -7,12 +6,12 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { UserCircle } from 'lucide-react'; // Import User icon
 
 interface User {
   id: string;
   username: string;
   email: string;
-  // Add any other user properties you need
 }
 
 const Navbar = () => {
@@ -34,8 +33,7 @@ const Navbar = () => {
         const res = await fetch('/api/auth/user');
         if (res.ok) {
           const data = await res.json();
-          setUser(data.user); // Set user data if session exists
-
+          setUser(data.user);
         }
       } catch (error) {
         console.error('Failed to fetch user session', error);
@@ -53,9 +51,9 @@ const Navbar = () => {
       });
 
       if (res.ok) {
-        setUser(null); // Clear user state
+        setUser(null);
         toast.success('You have successfully signed out.');
-        router.push('/auth'); // Redirect to sign-in page
+        router.push('/auth');
       } else {
         toast.error('Failed to sign out. Please try again.');
       }
@@ -98,22 +96,31 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Conditional Button */}
-      {user ? (
-        <Button
-          className="bg-red-500 font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-red-600"
-          onClick={handleSignOut}
-        >
-          Keluar
-        </Button>
-      ) : (
-        <Button
-          className="bg-[#4C84F6] font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-blue-600"
-          onClick={() => router.push('/auth')}
-        >
-          Masuk
-        </Button>
-      )}
+      {/* Conditional User Info and Button */}
+      <div className="flex items-center gap-8">
+        {user && (
+          <div className="flex items-center gap-2 text-gray-800 font-medium">
+            <UserCircle size={36} /> {/* User Icon */}
+            <span className='text-xl'>{user.username}</span>
+          </div>
+        )}
+
+        {user ? (
+          <Button
+            className="bg-red-500 font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-red-600"
+            onClick={handleSignOut}
+          >
+            Keluar
+          </Button>
+        ) : (
+          <Button
+            className="bg-[#4C84F6] font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-blue-600"
+            onClick={() => router.push('/auth')}
+          >
+            Masuk
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
