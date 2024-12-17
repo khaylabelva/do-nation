@@ -63,20 +63,6 @@ model CampaignAksi {
   createdAt      DateTime    @default(now())
 }
 
-model UserDonasi {
-  id             Int            @default(autoincrement()) // Unique ID for each record
-  userId         String
-  campaignId     Int
-  jumlah         Int
-  metodePembayaran String
-  user           User           @relation(fields: [userId], references: [id])
-  campaign       CampaignDonasi @relation(fields: [campaignId], references: [id])
-  createdAt      DateTime       @default(now())
-
-  @@id([id, userId, campaignId]) // Composite primary key
-}
-
-
 model Aksi {
   campaignId Int    
   id         Int      
@@ -87,15 +73,31 @@ model Aksi {
 }
 
 model UserAksi {
-  id             Int            @default(autoincrement()) // Unique ID for each record
-  userId         String
-  campaignId     Int
-  fotoDokumentasi String
-  verified       Boolean        @default(false)
-  user           User           @relation(fields: [userId], references: [id])
-  campaign       CampaignAksi   @relation(fields: [campaignId], references: [id])
-  createdAt      DateTime       @default(now())
+  id               Int            @default(autoincrement()) // Unique ID for each record
+  userId           String
+  campaignId       Int
+  deskripsi        String         @default("") // New column for description
+  fotoDokumentasi  String
+  verified         Boolean        @default(false)
+  user             User           @relation(fields: [userId], references: [id])
+  campaign         CampaignAksi   @relation(fields: [campaignId], references: [id])
+  createdAt        DateTime       @default(now())
 
   @@id([id, userId, campaignId]) // Composite primary key
 }
+
+model UserDonasi {
+  id               Int            @default(autoincrement()) // Unique ID for each record
+  userId           String
+  campaignId       Int
+  jumlah           Int
+  metodePembayaran String
+  deskripsi        String         @default("") // New column for description
+  user             User           @relation(fields: [userId], references: [id])
+  campaign         CampaignDonasi @relation(fields: [campaignId], references: [id])
+  createdAt        DateTime       @default(now())
+
+  @@id([id, userId, campaignId]) // Composite primary key
+}
+
 

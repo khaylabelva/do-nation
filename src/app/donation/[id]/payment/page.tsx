@@ -28,6 +28,7 @@ const PaymentPage: React.FC = () => {
   const [donationCampaign, setDonationCampaign] = useState<DonationCampaign | null>(null);
   const [loading, setLoading] = useState(true); // Loading state
   const [nominalDonasi, setNominalDonasi] = useState("10000");
+  const [donationDescription, setDonationDescription] = useState(""); 
 
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
@@ -71,6 +72,7 @@ const PaymentPage: React.FC = () => {
           campaignId: donationCampaign.id,
           jumlah: parseInt(nominalDonasi.replace(/\D/g, ""), 10), // Clean input value
           metodePembayaran: selectedPaymentMethod?.name || "Unknown",
+          deskripsi: donationDescription || "",
         }),
       });
   
@@ -214,6 +216,8 @@ const PaymentPage: React.FC = () => {
               className="w-full h-[130px] p-3 rounded-lg border border-gray-200 text-[12px]"
               placeholder="Tulis doa untuk penggalang dana atau dirimu agar bisa diamini oleh orang baik lainnya."
               maxLength={300}
+              value={donationDescription}
+              onChange={(e) => setDonationDescription(e.target.value)} // Set description state
             />
           </div>
         </div>

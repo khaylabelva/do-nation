@@ -89,25 +89,32 @@ const DocumentationPage: React.FC = () => {
     setTimeout(loadExistingData, 0);
   };
 
-  const handleSubmit = () => {
-    const newSubmission: UserAksi = {
-      id: Date.now(),
-      aksiId: currentAksi.id,
-      fotoDokumentasi: imageInput,
-      deskripsi: textInput,
-      verified: true,
+  const handleSubmit = async () => {
+    const payload = {
+      campaignId,           // Replace this with your current campaign ID
+      deskripsi: textInput, // Text area input
+      fotoDokumentasi: "",  // Placeholder for image upload
     };
-
-    setUserAksiData((prev) => {
-      const updatedData = prev.filter((item) => item.aksiId !== currentAksi.id);
-      return [...updatedData, newSubmission];
-    });
-
-    alert(`Aksi "${currentAksi.deskripsi}" berhasil disubmit!`);
-
-    setImageInput(null);
-    setTextInput("");
+  
+    try {
+      const res = await fetch("/api/actions/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+  
+      const result = await res.json();
+      if (res.ok) {
+        alert("Aksi submitted successfully!");
+      } else {
+        console.error(result.error);
+        alert("Failed to submit aksi.");
+      }
+    } catch (error) {
+      console.error("Error submitting aksi:", error);
+    }
   };
+  
 
   return (
     <div className="container mx-auto px-8 py-8">
