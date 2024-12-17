@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { UserCircle } from 'lucide-react'; // Import User icon
+import ProfileIcon from '@Images/profile-icon.png';
 
 interface User {
   id: string;
@@ -100,8 +101,14 @@ const Navbar = () => {
       <div className="flex items-center gap-8">
         {user && (
           <div className="flex items-center gap-2 text-gray-800 font-medium">
-            <UserCircle size={36} /> {/* User Icon */}
-            <span className='text-xl'>{user.username}</span>
+            <Image
+              src={ProfileIcon}
+              alt="Profile Icon"
+              width={36}
+              height={36}
+              className="rounded-full" // Optional: To make it circular
+            />
+            <span className="text-xl ml-2">{user.username}</span>
           </div>
         )}
 
@@ -121,6 +128,7 @@ const Navbar = () => {
           </Button>
         )}
       </div>
+
     </div>
   );
 };

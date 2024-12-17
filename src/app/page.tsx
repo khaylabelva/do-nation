@@ -1,8 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import Navbar from '@/components/layout/navbar';
 import DonasiCard from '@/components/DonasiCard'; // Import DonasiCard component
+
+import HeroBanner from '@Images/hero-banner.png'; 
 
 export default function HomePage() {
   const [donations, setDonations] = useState<any[]>([]); // State to hold fetched data
@@ -25,16 +29,18 @@ export default function HomePage() {
     <div className="font-sans">
       <Navbar />
 
-      <div className="relative w-full max-w-[1300px] mx-auto h-[470px] flex bg-blue-100 overflow-hidden rounded-2xl">
-        <img
-          src="/landingpage.png"
-          alt="Hero"
-          className="absolute inset-0 w-full h-full object-cover rounded-[20px]"
-        />
-        <h1 className="text-[120px] font-bold ml-9 mb-1 text-white relative drop-shadow-lg place-content-end">
-          DoNation
-        </h1>
+      {/* Hero Banner Section */}
+      <div className="relative w-full mt-8 max-w-[1200px] mx-auto h-[360px] flex bg-blue-100 overflow-hidden rounded-2xl">
+        <Link href="/homepage" className="w-full h-full">
+          <Image
+            src={HeroBanner}
+            alt="Hero Banner"
+            layout="fill"
+            className="cursor-pointer"
+          />
+        </Link>
       </div>
+
 
       {/* Deskripsi */}
       <section className="px-16 pt-20 pb-8">
@@ -65,7 +71,7 @@ export default function HomePage() {
         ].map((item, index) => (
           <div 
             key={index} 
-            className="flex flex-col justify-end bg-gray-100 border-[0.2px] border-gray-500 rounded-2xl text-justify p-6 min-h-[300px] hover:shadow-lg transition"
+            className="flex flex-col justify-end bg-white border-[0.2px] border-gray-500 rounded-2xl text-justify p-6 min-h-[300px] hover:shadow-lg transition"
           >
             {/* Image */}
             <div className="w-12 h-12 bg-gray-200 rounded-full flex justify-center mb-4 overflow-hidden">
