@@ -28,7 +28,7 @@ const PaymentPage: React.FC = () => {
   const params = useParams(); // Get dynamic route parameters
   const [donationCampaign, setDonationCampaign] = useState<DonationCampaign | null>(null);
   const [loading, setLoading] = useState(true); // Loading state
-  const [nominalDonasi, setNominalDonasi] = useState("10000");
+  const [nominalDonasi, setNominalDonasi] = useState("10.000");
   const [donationDescription, setDonationDescription] = useState(""); 
 
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -84,7 +84,7 @@ const PaymentPage: React.FC = () => {
         toast.error("Gagal melakukan donasi :(");
       } else {
         toast.success(`Berhasil mendonasikan! Rp${nominalDonasi}`);
-        router.push(`/donation/${donationCampaign.id}`); // Navigate to /history after successful submission
+        router.push(`/history`); // Navigate to /history after successful submission
       }
     } catch (error) {
       console.error("Error submitting donation:", error);
@@ -138,8 +138,8 @@ const PaymentPage: React.FC = () => {
             <div>
               <BackButton />
             </div>
-            <h1 className="text-3xl font-bold">{judul}</h1>
-            <span className="text-gray-500 text-lg">{penyelenggara}</span>
+            <h1 className="text-2xl font-bold">{judul}</h1>
+            <span className="text-gray-500 text-md">{penyelenggara}</span>
           </div>
         </div>
 
