@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation"; // Use the Next.js `useP
 import BackButton from "@/components/ui/backbutton";
 import { ArrowRight } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 
 interface Aksi {
   id: number;
@@ -112,108 +113,153 @@ const DocumentationPage: React.FC = () => {
   
       if (!res.ok) {
         console.error(result.error || "Failed to submit aksi");
-        alert("Failed to submit aksi.");
+        toast("Failed to submit aksi.");
       } else {
-        alert("Aksi submitted successfully!");
+        toast("Aksi submitted successfully!");
         router.push(`/action/${campaignId}`); // Navigate back to the action page
       }
     } catch (error) {
       console.error("Error submitting aksi:", error);
-      alert("An error occurred while submitting aksi.");
+      toast("An error occurred while submitting aksi.");
     }
   };
   
   
 
   return (
-    <div className="container mx-auto px-8 py-8">
+    <div className="container mx-auto py-8 px-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <BackButton/>
-        <h1 className="text-2xl font-bold">{`Aksi ${currentAksi.id}`}</h1>
-        <span className="text-gray-500">Unity Foundation</span>
+      <div className="flex items-center justify-between mb-6">
+        <BackButton />
+        <h1 className="text-3xl font-bold text-gray-900 text-center">
+          Bantu Bersih-Bersih Lingkungan
+        </h1>
+        <span className="text-gray-400 font-medium text-lg">Unity Foundation</span>
       </div>
-
-      {/* Navigation */}
-      <div className="flex justify-center space-x-2 mb-8">
+  
+      {/* Progress Indicator */}
+      <div className="flex items-center justify-center mb-8">
         {aksiList.map((aksi, index) => (
-          <button
-            key={aksi.id}
-            onClick={() => {
-              setCurrentAksiIndex(index);
-              loadExistingData();
-            }}
-            className={`w-10 h-10 rounded-full ${
-              index === currentAksiIndex ? "bg-blue-500 text-white" : "bg-gray-300 text-black"
-            }`}
-          >
-            {aksi.id}
-          </button>
+          <div key={aksi.id} className="flex items-center">
+            <div
+              className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                index === currentAksiIndex
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-gray-700"
+              }`}
+            >
+              {index + 1}
+            </div>
+            {index < aksiList.length - 1 && (
+              <div className="h-1 w-32 bg-gray-300 mx-1"></div>
+            )}
+          </div>
         ))}
       </div>
-
-      {/* Aksi Details */}
-      <div className="mb-8">
-        <h2 className="text-lg font-bold mb-1">{`Aksi ${currentAksi.id}`}</h2>
-        <p className="text-gray-500">{currentAksi.deskripsi}</p>
-      </div>
-
-      {/* Input Section */}
-      <div>
-        <h3 className="text-md font-semibold mb-4">Submisi Aksi</h3>
-        <div className="flex items-center mb-4">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => e.target.files && setImageInput(e.target.files[0])}
-            className="border p-2 rounded-md"
-          />
-          {imageInput && (
-            <img
-              src={URL.createObjectURL(imageInput)}
-              alt="Preview"
-              className="w-24 h-24 object-cover ml-4 rounded-md"
+  
+      {/* Content Grid */}
+      <div className="grid grid-cols-2 gap-8">
+        {/* Kiri: Aksi Details dan Upload File */}
+        <div className="space-y-6">
+          {/* Aksi Details */}
+          <div className="border border-gray-300 rounded-lg p-6 bg-white">
+            <div className="flex items-center mb-4">
+              <div className="w-12 h-12 flex items-center justify-center bg-blue-500 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-6 h-6 text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-gray-400 font-medium text-sm">
+                  Aksi {currentAksi.id}
+                </h3>
+                <h2 className="font-bold text-lg text-gray-800 leading-tight">
+                  {currentAksi.deskripsi}
+                </h2>
+              </div>
+            </div>
+          </div>
+  
+          {/* Upload File */}
+          <div className="border border-gray-300 rounded-lg p-6 bg-white">
+            <label className="block font-semibold text-gray-800 mb-2">
+              Upload File
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => e.target.files && setImageInput(e.target.files[0])}
+              className="block w-full border rounded-lg p-2 text-gray-500 focus:outline-none"
             />
-          )}
+            {imageInput && (
+              <img
+                src={URL.createObjectURL(imageInput)}
+                alt="Preview"
+                className="mt-4 w-32 h-32 object-cover rounded-lg"
+              />
+            )}
+          </div>
         </div>
-        <textarea
-          rows={4}
-          placeholder="Deskripsi Aksi"
-          value={textInput}
-          onChange={(e) => setTextInput(e.target.value)}
-          className="w-full border p-2 rounded-md"
-        ></textarea>
+  
+        {/* Kanan: Deskripsi Input */}
+        <div className="border border-gray-300 rounded-lg p-6 bg-white">
+          <label className="block font-semibold text-gray-800 mb-2">
+            Deskripsi Aksi
+          </label>
+          <textarea
+            rows={12}
+            placeholder="Tulis caption untuk aksimu..."
+            value={textInput}
+            onChange={(e) => setTextInput(e.target.value)}
+            className="w-full border rounded-lg p-4 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          ></textarea>
+        </div>
       </div>
-
+  
       {/* Submit Button */}
-      <div className="text-center mt-8">
+      <div className="flex justify-center mt-8">
         <button
           onClick={handleSubmit}
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold transition duration-300"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-md transition duration-300"
         >
           Submit Aksi
         </button>
       </div>
-
+  
       {/* Navigation Buttons */}
       <div className="flex justify-between mt-8">
         <button
           onClick={() => handleNavigation("prev")}
-          className={`flex items-center text-blue-500 text-md font-medium ${currentAksiIndex === 0 && "invisible"}`}
-          >
-          <ArrowLeft size={20} className="mr-1" />
+          className={`flex items-center text-blue-500 font-medium ${
+            currentAksiIndex === 0 && "invisible"
+          }`}
+        >
+          <ArrowLeft size={20} className="mr-2" />
           Sebelumnya
         </button>
         <button
           onClick={() => handleNavigation("next")}
-          className={`flex items-center text-blue-500 text-md font-medium ${currentAksiIndex === aksiList.length - 1 && "invisible"}`}
-          >
-          <ArrowRight size={20} className="mr-1" /> {/* Icon with size and spacing */}
+          className={`flex items-center text-blue-500 font-medium ${
+            currentAksiIndex === aksiList.length - 1 && "invisible"
+          }`}
+        >
           Selanjutnya
+          <ArrowRight size={20} className="ml-2" />
         </button>
       </div>
     </div>
-  );
+  );      
 };
 
 export default DocumentationPage;
