@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation'
 import Navbar from "@/components/layout/navbar";
 import { ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import HistoryDonasiCard from "@/components/cards/HistoryDonasiCard";
 import HistoryAksiCard from "@/components/cards/HistoryAksiCard";
+import { Button } from "@/components/ui/button";
 
 const History = () => {
+  const router = useRouter()
   const [selectedType, setSelectedType] = useState<"donasi" | "aksi">("donasi");
 
   const [donations, setDonations] = useState<any[]>([]);
@@ -103,7 +106,11 @@ const History = () => {
 
           {/* Conditional Rendering */}
           {loading ? (
-            <p className="text-center text-gray-500">Loading...</p>
+            <p className="flex flex-col items-center justify-center text-gray-500 text-lg mx-auto h-[200px]">
+              <span className="text-2xl font-bold text-gray-600 mb-4">
+                Loading...
+              </span>
+            </p>
           ) : (
             <div
               className="flex overflow-x-auto space-x-6 p-2 hide-scrollbar w-full"
@@ -128,7 +135,17 @@ const History = () => {
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500">No donation history available.</p>
+                  <p className="flex flex-col items-center justify-center text-gray-500 text-lg mx-auto h-[200px]">
+                    <span className="text-2xl font-bold text-gray-600 mb-4">
+                      Kamu belum melakukan donasi 😔
+                    </span>
+                    <Button
+                      className="bg-[#4C84F6] font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-blue-600"
+                      onClick={() => router.push('/homepage')}
+                    >
+                      Yuk Donasi
+                    </Button>
+                  </p>
                 )
               ) : actions.length > 0 ? (
                 actions.slice().reverse().map((action) => (
@@ -149,7 +166,17 @@ const History = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-gray-500">No action history available.</p>
+                <p className="flex flex-col items-center justify-center text-gray-500 text-lg mx-auto h-[200px]">
+                  <span className="text-2xl font-bold text-gray-600 mb-4">
+                    Kamu belum melakukan aksi 😔
+                  </span>
+                  <Button
+                    className="bg-[#4C84F6] font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-blue-600"
+                    onClick={() => router.push('/homepage')}
+                  >
+                    Yuk Donasi
+                  </Button>
+                </p>
               )}
             </div>
           )}

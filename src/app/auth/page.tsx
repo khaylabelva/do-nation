@@ -4,14 +4,14 @@ import SignInForm from './SignInForm';
 import SignUpForm from './SignUpForm';
 import DonateIcon from '@Images/donate-icon.png';
 import Logo from '@Images/logo.png';
-// import { getUser } from '@/lib/lucia';
+import { getUser } from '@/lib/lucia';
 import Image from 'next/image';
 
 const AuthenticatePage = async () => {
-//   const user = await getUser();
-//   if (user) {
-//     return redirect('/home');
-//   }
+  const user = await getUser();
+  if (user) {
+    return redirect('/');
+  }
 
   return (
     <>
