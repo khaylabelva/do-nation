@@ -43,7 +43,7 @@ const DonasiSection: React.FC = () => {
     <section className="my-16 relative mb-32">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Donasi</h2>
-        <a href="/homepage/donations" className="text-blue-500 text-sm font-semibold">
+        <a href="/campaign/donations" className="text-blue-500 text-sm font-semibold">
           Lihat Selengkapnya
         </a>
       </div>

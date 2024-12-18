@@ -8,7 +8,7 @@ import DonasiCard from '@/components/cards/DonasiCard'; // Import DonasiCard com
 
 import HeroBanner from '@Images/hero-banner.png'; 
 
-export default function HomePage() {
+export default function campaign() {
   const [donations, setDonations] = useState<any[]>([]); // State to hold fetched data
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function HomePage() {
 
       {/* Hero Banner Section */}
       <div className="relative w-full mt-8 max-w-[1200px] mx-auto h-[360px] flex bg-blue-100 overflow-hidden rounded-2xl transition-transform duration-300 transform hover:scale-105">
-        <Link href="/homepage" className="w-full h-full">
+        <Link href="/campaign" className="w-full h-full">
           <Image
             src={HeroBanner}
             alt="Hero Banner"

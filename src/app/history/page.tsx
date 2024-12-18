@@ -141,7 +141,7 @@ const History = () => {
                     </span>
                     <Button
                       className="bg-[#4C84F6] font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-blue-600"
-                      onClick={() => router.push('/homepage')}
+                      onClick={() => router.push('/campaign')}
                     >
                       Yuk Donasi
                     </Button>
@@ -172,7 +172,7 @@ const History = () => {
                   </span>
                   <Button
                     className="bg-[#4C84F6] font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-blue-600"
-                    onClick={() => router.push('/homepage')}
+                    onClick={() => router.push('/campaign')}
                   >
                     Yuk Donasi
                   </Button>

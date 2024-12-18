@@ -22,7 +22,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Donation', path: '/homepage' },
+    { name: 'Donation', path: '/campaign' },
     { name: 'Leaderboard', path: '/leaderboard' },
     { name: 'History', path: '/history' },
   ];
@@ -64,7 +64,7 @@ const Navbar = () => {
     }
   };
 
-  const isDonationActive = pathname.includes('/donation') || pathname.includes('/action') || pathname === '/homepage';
+  const isDonationActive = pathname.includes('/donation') || pathname.includes('/action') || pathname === '/campaign';
 
   return (
     <div className="flex justify-between items-center p-6 px-12 bg-white">
@@ -87,7 +87,7 @@ const Navbar = () => {
             const isActive =
               link.path === '/' && pathname === '/' || link.path === '/leaderboard' && pathname === '/leaderboard'
                 ? true
-                : link.path === '/homepage' && isDonationActive
+                : link.path === '/campaign' && isDonationActive
                 ? true
                 : link.path === '/history' && pathname === '/history';
 
