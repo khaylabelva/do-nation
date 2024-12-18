@@ -70,8 +70,8 @@ const ActionsPage: React.FC = () => {
           <div className="relative w-1/2">
             <input
               type="text"
-              placeholder="Cari Kampanye Sosial..."
-              className="w-full p-3 pl-10 border rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Cari Aksi Sosial..."
+              className="w-full p-3 pl-10 border border-neutral-500 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)} // Update state pencarian
             />

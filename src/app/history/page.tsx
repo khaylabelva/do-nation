@@ -113,7 +113,7 @@ const History = () => {
             </p>
           ) : (
             <div
-              className="flex overflow-x-auto space-x-6 p-2 hide-scrollbar w-full"
+              className="flex overflow-x-auto space-x-6 p-2 hide-scrollbar w-full h-[400px]"
               style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
             >
               {selectedType === "donasi" ? (

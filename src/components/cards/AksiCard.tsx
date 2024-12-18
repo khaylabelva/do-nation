@@ -33,6 +33,13 @@ const AksiCard: React.FC<AksiCardProps> = ({
     return new Intl.NumberFormat("id-ID").format(value);
   };
 
+  const calculateDaysLeft = () => {
+    const daysLeft = Math.ceil(
+      (new Date(batasWaktu).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+    );
+    return Math.max(daysLeft, 0); // Avoid negative days
+  };
+
   const handleCardClick = () => {
     router.push(`/action/${id}`); // Navigate to the specific action page
   };
@@ -43,8 +50,8 @@ const AksiCard: React.FC<AksiCardProps> = ({
       onClick={handleCardClick} // Call navigation function
     >
       {/* Image */}
-      <div className="w-1/3">
-        <img src={foto} alt={judul} className="h-full w-full object-cover" />
+      <div className="w-[45%]">
+        <img src={foto} alt={judul} className="object-cover" />
       </div>
 
       {/* Campaign Details */}
@@ -57,14 +64,7 @@ const AksiCard: React.FC<AksiCardProps> = ({
         <div className="flex justify-between text-sm text-gray-600">
           <div>🌟 {progressAksi} Aksi</div>
           <div>
-            ⏰{" "}
-            {Math.max(
-              0,
-              Math.ceil(
-                (new Date(batasWaktu).getTime() - new Date().getTime()) /
-                  (1000 * 60 * 60 * 24)
-              )
-            )}{" "}
+            ⏰ {calculateDaysLeft()}{" "}
             Hari Tersisa
           </div>
           <div>👤{progressAksi} Partisipan</div>
