@@ -6,41 +6,71 @@ import Placeholder from "@Images/image-placeholder.png"; // Replace with the act
 import Image from "next/image";
 import ProgressBar from "@/components/ui/progressbar";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getCampaignAksiById } from "@/lib/api";
+import { useEffect, useRef, useState } from "react";
+import { getCampaignAksiById, getUserAksiByCampaignId } from "@/lib/api";
+import CompactCard from "@/components/cards/CompactCard";
 
 interface Campaign {
+  id: number;
   judul: string;
-  foto?: string;
+  foto: string;
   deskripsi: string;
   penyelenggara: string;
   targetAksi: number;
   progressAksi: number;
-  pelakuAksiList: any[]; // Adjust type as necessary
-  batasWaktu: Date;
   konversi: number;
-} 
+  batasWaktu: string;
+  jumlahAksi: number;
+  jumlahPartisipan: number;
+}
+
+interface UserAksi {
+  id: number;
+  username: string;
+  deskripsi: string;
+  createdAt: string;
+  fotoDokumentasi: string;
+}
 
 const ActionPage: React.FC = () => {
-  const params = useParams(); // Dynamically access route parameters
+  const params = useParams();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [userAksiList, setUserAksiList] = useState<UserAksi[]>([]);
+  const [loading, setLoading] = useState(true);
+  const donationContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchCampaign = async () => {
+    const fetchCampaignData = async () => {
       try {
-        setLoading(true); // Start loading
-        const data = await getCampaignAksiById(parseInt(params.id as string, 10));
-        setCampaign(data);
+        setLoading(true);
+
+        // Fetch campaign details
+        const campaignId = parseInt(params.id as string, 10);
+        const campaignData = await getCampaignAksiById(campaignId);
+        setCampaign(campaignData);
+
+        // Fetch user actions related to this campaign
+        const aksiData = await getUserAksiByCampaignId(campaignId);
+        setUserAksiList(aksiData);
       } catch (error) {
-        console.error("Error fetching campaign data:", error);
+        console.error("Error fetching data:", error);
       } finally {
-        setLoading(false); // End loading
+        setLoading(false);
       }
     };
 
-    fetchCampaign();
+    fetchCampaignData();
   }, [params.id]);
+
+  const scrollDonations = (direction: "left" | "right") => {
+    if (donationContainerRef.current) {
+      const scrollAmount = 300;
+      donationContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -76,8 +106,8 @@ const ActionPage: React.FC = () => {
       <Navbar />
       <div className="flex-1 flex flex-col items-center justify-center p-8">
         <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl gap-16">
-          {/* Left Image Section */}
-          <div className="w-full md:w-[50%] rounded-[60px] overflow-hidden">
+          {/* Left Image Section with CompactCard */}
+          <div className="relative w-full md:w-[50%] rounded-t-[60px] overflow-hidden">
             <Image
               src={campaign.foto || Placeholder}
               alt={campaign.judul}
@@ -85,6 +115,46 @@ const ActionPage: React.FC = () => {
               width={400}
               height={300}
             />
+
+            {/* CompactCard Section */}
+            <div className="relative mt-4">
+              <h2 className="text-lg font-bold mb-4">Partisipasi Terbaru</h2>
+
+              <div className="flex items-center relative">
+                {/* Left Arrow */}
+                <button
+                  onClick={() => scrollDonations("left")}
+                  className="absolute left-0 z-10 bg-white rounded-full shadow-md p-2 flex items-center justify-center w-8 h-8 transform -translate-y-1/2 top-1/2"
+                >
+                  &#9664;
+                </button>
+
+                {/* Scrollable CompactCard List */}
+                <div
+                  ref={donationContainerRef}
+                  className="flex overflow-x-auto hide-scrollbar space-x-6 px-10 py-2"
+                  style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
+                >
+                  {userAksiList.map((aksi) => (
+                    <CompactCard
+                      key={aksi.id}
+                      username={aksi.username}
+                      deskripsi={aksi.deskripsi}
+                      jumlah={campaign.konversi / campaign.jumlahAksi}
+                      createdAt={aksi.createdAt}
+                    />
+                  ))}
+                </div>
+
+                {/* Right Arrow */}
+                <button
+                  onClick={() => scrollDonations("right")}
+                  className="absolute right-0 z-10 bg-white rounded-full shadow-md p-2 flex items-center justify-center w-8 h-8 transform -translate-y-1/2 top-1/2"
+                >
+                  &#9654;
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Right Content Section */}
@@ -122,7 +192,7 @@ const ActionPage: React.FC = () => {
               <div className="flex flex-row items-center justify-center gap-1">
                 <div className="text-5xl">👤</div>
                 <div className="flex flex-col items-start">
-                  <span className="text-lg md:text-xl font-bold">{campaign.pelakuAksiList.length}</span>
+                  <span className="text-lg md:text-xl font-bold">{campaign.jumlahPartisipan}</span>
                   <span className="text-sm text-neutral-500">Partisipan</span>
                 </div>
               </div>
@@ -143,7 +213,7 @@ const ActionPage: React.FC = () => {
                       Rp{campaign.konversi.toLocaleString()}
                     </div>
                     <p className="text-xs font-medium text-neutral-500">
-                      Untuk setiap aksi yang selesai dilakukan
+                      Untuk {campaign.jumlahAksi} aksi yang selesai dilakukan
                     </p>
                   </div>
                 </div>

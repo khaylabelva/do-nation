@@ -152,21 +152,47 @@ export async function getAksiByCampaignId(id: number) {
 }
 
 export async function getCampaignAksiById(id: number) {
-  return await prisma.campaignAksi.findUnique({
+  const actions = await prisma.campaignAksi.findUnique({
     where: { id },
     select: {
+      id: true,
       judul: true,
       foto: true,
       deskripsi: true,
       penyelenggara: true,
       targetAksi: true,
       progressAksi: true,
-      pelakuAksiList: true, // Menghitung jumlah partisipan
       batasWaktu: true,
       konversi: true,
+      aksiList: {
+        select: {
+          id: true, // Fetch IDs for aksiList
+        },
+      },
+      pelakuAksiList: {
+        select: {
+          id: true, // Fetch IDs for pelakuAksiList
+        },
+      },
     },
   });
+
+  if (!actions) {
+    throw new Error("CampaignAksi not found");
+  }
+
+  // Map results with transformed properties
+  const transformedResult = {
+    ...actions,
+    batasWaktu: actions.batasWaktu.toISOString().split("T")[0], // Format Date to YYYY-MM-DD
+    jumlahAksi: actions.aksiList.length, // Count aksiList entries
+    jumlahPartisipan: actions.pelakuAksiList.length, // Count pelakuAksiList entries
+  };
+
+  return transformedResult;
 }
+
+
 
 export async function getUserDonasiByCampaignId(campaignId: number) {
   const userDonasiList = await prisma.userDonasi.findMany({
@@ -190,5 +216,29 @@ export async function getUserDonasiByCampaignId(campaignId: number) {
     jumlah: donasi.jumlah,
     deskripsi: donasi.deskripsi,
     createdAt: donasi.createdAt.toISOString(),
+  }));
+}
+
+export async function getUserAksiByCampaignId(campaignId: number) {
+  const userAksiList = await prisma.userAksi.findMany({
+    where: { campaignId },
+    select: {
+      id: true,
+      deskripsi: true,
+      createdAt: true,
+      fotoDokumentasi: true,
+      user: {
+        select: { username: true }, // Fetch the username
+      },
+    },
+  });
+
+  // Map the data to include `username` for easier access
+  return userAksiList.map((aksi) => ({
+    id: aksi.id,
+    username: aksi.user.username, // Extract username from the user relation
+    deskripsi: aksi.deskripsi,
+    createdAt: aksi.createdAt.toISOString(),
+    fotoDokumentasi: aksi.fotoDokumentasi,
   }));
 }
