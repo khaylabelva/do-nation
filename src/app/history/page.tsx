@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Navbar from "@/components/layout/navbar";
-import AksiCard from "@/components/cards/AksiCard";
+import { ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import HistoryDonasiCard from "@/components/cards/HistoryDonasiCard";
 import HistoryAksiCard from "@/components/cards/HistoryAksiCard";
@@ -83,11 +83,9 @@ const History = () => {
             {/* Styled Dropdown */}
             <div className="relative ml-4 mb-4">
               <select
-                className="block appearance-none w-40 bg-gray-50 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md leading-tight focus:outline-none"
+                className="block appearance-none w-40 bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-2 rounded-md leading-tight focus:outline-none"
                 value={selectedType}
-                onChange={(e) =>
-                  setSelectedType(e.target.value as "donasi" | "aksi")
-                }
+                onChange={(e) => setSelectedType(e.target.value as "donasi" | "aksi")}
               >
                 <option value="donasi" className="text-gray-700">
                   Donasi
@@ -96,6 +94,10 @@ const History = () => {
                   Aksi
                 </option>
               </select>
+              {/* Arrow-down Icon */}
+              <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <ChevronDown className="w-4 h-4 text-gray-400" />
+              </div>
             </div>
           </div>
 

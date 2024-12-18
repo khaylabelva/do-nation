@@ -54,17 +54,17 @@ export default function HomePage() {
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6 px-16 mb-10">
         {[
           { 
-            image: "/icon-1.png", 
+            image: "/assets/icon-1.png", 
             title: "Hadirkan Dampak Nyata", 
             desc: "Sebarkan kebahagiaan melalui aksi donasi yang membawa perubahan besar. Jelaskan bagaimana setiap kontribusi dapat memberikan arti yang besar bagi sesama." 
           },
           { 
-            image: "/icon-2.png", 
+            image: "/assets/icon-2.png", 
             title: "Sebarkan Kebaikan Lebih Cepat", 
             desc: "Manfaatkan kekuatan media sosial dan jaringan online. Bagikan kampanye donasi Anda dengan mudah ke berbagai platform hanya dalam hitungan detik." 
           },
           { 
-            image: "/icon-3.png", 
+            image: "/assets/icon-3.png", 
             title: "Terhubung Hingga ke Penjuru Dunia", 
             desc: "Bangun jaringan solidaritas yang kuat untuk mendukung tujuan mulia Anda. Ajak lebih banyak orang untuk berpartisipasi bersama di komunitas lokal dan global." 
           },

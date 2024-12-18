@@ -36,10 +36,10 @@ const PaymentPage: React.FC = () => {
     useState<PaymentMethod | null>(null);
 
   const paymentMethods: PaymentMethod[] = [
-    { id: 1, name: "QRIS", image: "/qris.png" },
-    { id: 2, name: "GoPay", image: "/gopay.png" },
-    { id: 3, name: "BCA", image: "/bca.png" },
-    { id: 4, name: "Mandiri", image: "/mandiri.png" },
+    { id: 1, name: "QRIS", image: "/payment/qris.png" },
+    { id: 2, name: "GoPay", image: "/payment/gopay.png" },
+    { id: 3, name: "BCA", image: "/payment/bca.png" },
+    { id: 4, name: "Mandiri", image: "/payment/mandiri.png" },
   ];
 
   const formatNumberWithDots = (value: string) => {

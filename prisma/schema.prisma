@@ -57,8 +57,9 @@ model CampaignAksi {
   targetAksi     Int
   progressAksi   Int         @default(0)
   batasWaktu     DateTime
-  aksiList       Aksi[]      // One-to-many relationship to Aksi
-  pelakuAksiList UserAksi[]  // One-to-many relationship to UserAksi
+  konversi       Int
+  aksiList       Aksi[]      
+  pelakuAksiList UserAksi[]  
   createdAt      DateTime    @default(now())
 }
 

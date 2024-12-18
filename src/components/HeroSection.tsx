@@ -13,7 +13,7 @@ const HeroSection: React.FC = () => {
         {/* Gambar di Kanan */}
         <div className="flex-1 flex justify-end mr-20">
           <img
-            src="/HeroSectionImage.jpg"
+            src="/assets/HeroSectionImage.jpg"
             alt="Hero Image"
             className="w-80 h-80 md:w-120 md:h-120 object-contain"
           />
