@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { getAksiByCampaignId } from "@/lib/api"; // Ensure this is a client-compatible API call
-import { useParams, useRouter } from "next/navigation"; // Use the Next.js `useParams` hook to retrieve params dynamically";
+import { useParams, useRouter } from "next/navigation"; // Use the Next.js `useParams` hook to retrieve params dynamically
+import BackButton from "@/components/ui/backbutton";
+import { ArrowRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 interface Aksi {
   id: number;
@@ -19,8 +22,8 @@ interface UserAksi {
 
 const DocumentationPage: React.FC = () => {
   const params = useParams(); // Use the hook to get the `id`
-  const campaignId = parseInt(params.id as string, 10);
   const router = useRouter();
+  const campaignId = parseInt(params.id as string, 10);
 
   const [aksiList, setAksiList] = useState<Aksi[]>([]);
   const [currentAksiIndex, setCurrentAksiIndex] = useState(0);
@@ -126,9 +129,7 @@ const DocumentationPage: React.FC = () => {
     <div className="container mx-auto px-8 py-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <button onClick={() => window.history.back()} className="text-blue-500 hover:underline">
-          ← Kembali
-        </button>
+        <BackButton/>
         <h1 className="text-2xl font-bold">{`Aksi ${currentAksi.id}`}</h1>
         <span className="text-gray-500">Unity Foundation</span>
       </div>
@@ -171,7 +172,7 @@ const DocumentationPage: React.FC = () => {
             <img
               src={URL.createObjectURL(imageInput)}
               alt="Preview"
-              className="w-20 h-20 object-cover ml-4 rounded-md"
+              className="w-24 h-24 object-cover ml-4 rounded-md"
             />
           )}
         </div>
@@ -198,17 +199,17 @@ const DocumentationPage: React.FC = () => {
       <div className="flex justify-between mt-8">
         <button
           onClick={() => handleNavigation("prev")}
-          className={`text-blue-500 hover:underline ${currentAksiIndex === 0 && "invisible"}`}
-        >
-          ← Sebelumnya
+          className={`flex items-center text-blue-500 text-md font-medium ${currentAksiIndex === 0 && "invisible"}`}
+          >
+          <ArrowLeft size={20} className="mr-1" />
+          Sebelumnya
         </button>
         <button
           onClick={() => handleNavigation("next")}
-          className={`text-blue-500 hover:underline ${
-            currentAksiIndex === aksiList.length - 1 && "invisible"
-          }`}
-        >
-          Selanjutnya →
+          className={`flex items-center text-blue-500 text-md font-medium ${currentAksiIndex === aksiList.length - 1 && "invisible"}`}
+          >
+          <ArrowRight size={20} className="mr-1" /> {/* Icon with size and spacing */}
+          Selanjutnya
         </button>
       </div>
     </div>
