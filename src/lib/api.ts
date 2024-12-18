@@ -168,3 +168,27 @@ export async function getCampaignAksiById(id: number) {
   });
 }
 
+export async function getUserDonasiByCampaignId(campaignId: number) {
+  const userDonasiList = await prisma.userDonasi.findMany({
+    where: { campaignId },
+    select: {
+      id: true,
+      userId: true, // Include userId to align with UserDonasi type
+      jumlah: true,
+      deskripsi: true,
+      createdAt: true,
+      user: {
+        select: { username: true }, // Fetch the username
+      },
+    },
+  });
+
+  return userDonasiList.map((donasi) => ({
+    id: donasi.id,
+    userId: donasi.userId, // Include userId
+    username: donasi.user.username,
+    jumlah: donasi.jumlah,
+    deskripsi: donasi.deskripsi,
+    createdAt: donasi.createdAt.toISOString(),
+  }));
+}

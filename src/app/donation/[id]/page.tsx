@@ -2,13 +2,15 @@
 
 import Navbar from "@/components/layout/navbar";
 import BackButton from "@/components/ui/backbutton";
-import Placeholder from "@Images/image-placeholder.png"; // Replace with the actual image path
+import Placeholder from "@Images/image-placeholder.png";
 import Image from "next/image";
 import ProgressBar from "@/components/ui/progressbar";
 import UnicefIcon from "@Images/unicef-logo.png";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation"; // Import the useParams hook
-import { getCampaignById } from "@/lib/api";
+import ProfileIcon from "@Images/profile-icon.png";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
+import { getCampaignById, getUserDonasiByCampaignId } from "@/lib/api";
+import CompactCard from "@/components/cards/CompactCard";
 
 interface Campaign {
   id: number;
@@ -20,27 +22,53 @@ interface Campaign {
   progressDonasi: number;
 }
 
+interface UserDonasi {
+  id: number;
+  username: string;
+  jumlah: number;
+  deskripsi: string;
+  createdAt: string;
+}
+
 const DonationPage: React.FC = () => {
-  const params = useParams(); // Dynamically access route parameters
+  const params = useParams();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
+  const [userDonasiList, setUserDonasiList] = useState<UserDonasi[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const donationContainerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const fetchCampaign = async () => {
+    const fetchCampaignData = async () => {
       try {
         setLoading(true);
-        const campaignId = parseInt(params.id as string, 10); // Parse the dynamic route parameter
-        const data = await getCampaignById(campaignId);
-        setCampaign(data);
+        const campaignId = parseInt(params.id as string, 10);
+
+        const campaignData = await getCampaignById(campaignId);
+        setCampaign(campaignData);
+
+        const donasiData = await getUserDonasiByCampaignId(campaignId);
+        setUserDonasiList(donasiData);
       } catch (error) {
-        console.error("Error fetching campaign data:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCampaign();
+    fetchCampaignData();
   }, [params.id]);
+
+  const scrollDonations = (direction: "left" | "right") => {
+    if (donationContainerRef.current) {
+      const scrollAmount = 300; // Adjust scroll distance
+      if (direction === "left") {
+        donationContainerRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+      } else {
+        donationContainerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -67,9 +95,9 @@ const DonationPage: React.FC = () => {
     <div className="bg-neutral-50 min-h-screen flex flex-col overflow-hidden">
       <Navbar />
       <div className="flex-1 flex flex-col items-center justify-center p-4">
-        <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl gap-16">
-          {/* Left Image Section */}
-          <div className="w-full md:w-[50%] rounded-[60px] overflow-hidden">
+        <div className="flex flex-col md:flex-row w-full max-w-6xl gap-16 relative">
+          {/* Left Image Section with Donation List */}
+          <div className="relative w-full md:w-[50%] rounded-t-[60px] overflow-hidden">
             <Image
               src={campaign.foto || Placeholder}
               alt={campaign.judul}
@@ -77,6 +105,48 @@ const DonationPage: React.FC = () => {
               width={400}
               height={300}
             />
+
+           {/* Donation List Section */}
+            <div className="relative mt-4">
+              <h2 className="text-xl font-bold mb-2">Donasi Terbaru</h2>
+              
+              <div className="flex items-center relative">
+                {/* Left Arrow */}
+                <button
+                  onClick={() => scrollDonations("left")}
+                  className="absolute left-0 z-10 bg-white rounded-full shadow-md p-2 flex items-center justify-center w-8 h-8 transform -translate-y-1/2 top-1/2"
+                >
+                  &#9664;
+                </button>
+
+                {/* Scrollable Donation List */}
+                <div
+                  ref={donationContainerRef}
+                  className="flex overflow-x-auto hide-scrollbar space-x-6 px-10 py-2"
+                  style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
+                >
+                  {userDonasiList.slice().reverse().map((donasi) => (
+                    <CompactCard
+                      key={donasi.id}
+                      username={donasi.username}
+                      deskripsi={donasi.deskripsi}
+                      jumlah={donasi.jumlah}
+                      createdAt={donasi.createdAt}
+                    />
+                  ))}
+                </div>
+
+                {/* Right Arrow */}
+                <button
+                  onClick={() => scrollDonations("right")}
+                  className="absolute right-0 z-10 bg-white rounded-full shadow-md p-2 flex items-center justify-center w-8 h-8 transform -translate-y-1/2 top-1/2"
+                >
+                  &#9654;
+                </button>
+              </div>
+            </div>
+
+
           </div>
 
           {/* Right Content Section */}
@@ -108,7 +178,7 @@ const DonationPage: React.FC = () => {
             </div>
             <div className="border border-neutral-300 rounded-xl p-4 bg-white shadow-sm">
               <h2 className="font-bold text-lg md:text-xl mb-2">
-                Tentang Penggalang Dana
+                Tentang Penggalangan Dana
               </h2>
               <p className="text-sm md:text-base text-neutral-600 leading-relaxed">
                 {campaign.deskripsi}
