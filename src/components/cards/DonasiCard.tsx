@@ -57,7 +57,7 @@ const DonasiCard: React.FC<DonasiCardProps> = ({
       {/* Content Section */}
       <div className="p-4">
         <p className="text-xs text-gray-400 mb-1">{penyelenggara}</p>
-        <h3 className="font-bold text-gray-800 mb-4">{judul}</h3>
+        <h3 className="font-bold text-gray-800 mb-4"><p className="line-clamp-2">{judul}</p></h3>
 
         {/* Progress Bar */}
         <div className="mb-3">
