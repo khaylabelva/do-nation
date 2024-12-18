@@ -17,6 +17,7 @@ interface Aksi {
   batasWaktu: string;
   jumlahAksi: number;
   konversi: number;
+  jumlahPartisipan: number;
 }
 
 const ActionsPage: React.FC = () => {
@@ -91,7 +92,12 @@ const ActionsPage: React.FC = () => {
               key={item.id}
               className="transition-transform hover:scale-105"
             >
-              <AksiCard {...item} />
+              <AksiCard
+                {...item}
+                jumlahAksi={item.jumlahAksi} // Total aksi
+                jumlahPartisipan={item.jumlahPartisipan} // Total participants
+              />
+
             </a>
           ))}
         </div>

@@ -13,6 +13,7 @@ interface AksiCardProps {
   jumlahAksi: number;
   batasWaktu: string;
   konversi: number;
+  jumlahPartisipan: number; // Accept the list of participants
 }
 
 const AksiCard: React.FC<AksiCardProps> = ({
@@ -20,11 +21,12 @@ const AksiCard: React.FC<AksiCardProps> = ({
   judul,
   foto,
   penyelenggara,
-  progressAksi,
   targetAksi,
+  progressAksi,
   jumlahAksi,
-  konversi,
   batasWaktu,
+  konversi,
+  jumlahPartisipan
 }) => {
   const router = useRouter(); // Enable navigation
   const progressPercentage = (progressAksi / targetAksi) * 100;
@@ -67,7 +69,7 @@ const AksiCard: React.FC<AksiCardProps> = ({
             ⏰ {calculateDaysLeft()}{" "}
             Hari Tersisa
           </div>
-          <div>👤{progressAksi} Partisipan</div>
+          <div>👤{jumlahPartisipan} Partisipan</div>
         </div>
 
         {/* Progress */}
@@ -81,7 +83,7 @@ const AksiCard: React.FC<AksiCardProps> = ({
           <span className="text-gray-600 font-medium">
             Konversi:{" "}
             <span className="font-bold text-gray-800">
-              2 Aksi = Rp {formatNumber(konversi)}
+              {jumlahAksi} Aksi = Rp {formatNumber(konversi)}
             </span>
           </span>
         </div>

@@ -16,19 +16,26 @@ export async function getActions() {
       konversi: true,
       aksiList: {
         select: {
-          id: true, // Hanya mengambil ID untuk menghitung jumlah aksi
+          id: true, // Only fetching IDs for aksiList
+        },
+      },
+      pelakuAksiList: {
+        select: {
+          id: true, // Only fetching IDs for participants
         },
       },
     },
   });
 
-  // Map hasil untuk menambahkan panjang `aksiList`
+  // Map results to include `jumlahAksi` and `jumlahPartisipan`
   return actions.map((action) => ({
     ...action,
     batasWaktu: action.batasWaktu.toISOString().split("T")[0], // Format Date
-    jumlahAksi: action.aksiList.length, // Hitung jumlah aksi
+    jumlahAksi: action.aksiList.length, // Count aksiList
+    jumlahPartisipan: action.pelakuAksiList.length, // Count pelakuAksiList
   }));
 }
+
 
 export async function getDonations() {
   const donations = await prisma.campaignDonasi.findMany({

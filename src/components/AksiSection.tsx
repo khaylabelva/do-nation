@@ -1,5 +1,6 @@
 "use client";
 
+import { getActions } from "@/lib/api";
 import AksiCard from "./cards/AksiCard";
 import { useState, useEffect } from "react";
 
@@ -14,8 +15,8 @@ const AksiSection: React.FC = () => {
     progressAksi: number;
     konversi: number;
     batasWaktu: string;
-    aksiList: { /* Structure of aksiList items */ }[];
-    pelakuAksiList: { /* Structure of pelakuAksiList items */ }[];
+    jumlahAksi: number;
+    jumlahPartisipan: number;
   }
 
   const [actions, setActions] = useState<Action[]>([]);
@@ -25,10 +26,8 @@ const AksiSection: React.FC = () => {
   useEffect(() => {
     const fetchActions = async () => {
       try {
-        const res = await fetch("/api/actions");
-        if (!res.ok) throw new Error("Failed to fetch actions");
-        const data = await res.json();
-        setActions(data);
+        const res = await getActions();
+        setActions(res);
       } catch (error) {
         console.error("Error fetching actions:", error);
       }
@@ -36,6 +35,7 @@ const AksiSection: React.FC = () => {
 
     fetchActions();
   }, []);
+  
 
   // Function for carousel navigation
   const handleNext = () => {
@@ -75,7 +75,8 @@ const AksiSection: React.FC = () => {
                 progressAksi={item.progressAksi}
                 konversi={item.konversi}
                 batasWaktu={item.batasWaktu} 
-                jumlahAksi={item.aksiList.length}/>
+                jumlahAksi={item.jumlahAksi}
+                jumlahPartisipan={item.jumlahPartisipan}/>
             </div>
           ))}
         </div>

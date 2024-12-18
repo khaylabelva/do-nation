@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAksiByCampaignId } from "@/lib/api"; // Ensure this is a client-compatible API call
+import { getAksiByCampaignId, getCampaignAksiById } from "@/lib/api"; // Ensure this is a client-compatible API call
 import { useParams, useRouter } from "next/navigation"; // Use the Next.js `useParams` hook to retrieve params dynamically
 import BackButton from "@/components/ui/backbutton";
 import { ArrowRight } from "lucide-react";
@@ -14,52 +14,100 @@ interface Aksi {
 }
 
 interface UserAksi {
-  id: number;
   aksiId: number;
-  fotoDokumentasi: File | null;
-  deskripsi: string;
-  verified: boolean;
 }
 
+interface Campaign {
+  judul: string;
+  penyelenggara: string;
+} 
+
 const DocumentationPage: React.FC = () => {
-  const params = useParams(); // Use the hook to get the `id`
+  const params = useParams();
   const router = useRouter();
   const campaignId = parseInt(params.id as string, 10);
 
   const [aksiList, setAksiList] = useState<Aksi[]>([]);
-  const [currentAksiIndex, setCurrentAksiIndex] = useState(0);
+  const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [userAksiData, setUserAksiData] = useState<UserAksi[]>([]);
+  const [currentAksiIndex, setCurrentAksiIndex] = useState(0);
   const [imageInput, setImageInput] = useState<File | null>(null);
   const [textInput, setTextInput] = useState("");
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
-
-  // Fetch Aksi data on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true); // Start loading
-        const data = await getAksiByCampaignId(campaignId);
-        setAksiList(data);
+        setLoading(true);
+        const aksi = await getAksiByCampaignId(campaignId);
+        setAksiList(aksi);
+
+        const campaignData = await getCampaignAksiById(campaignId);
+        setCampaign(campaignData);
+
+        // Fetch UserAksi to determine progress
+        const res = await fetch(`/api/user-aksi?campaignId=${campaignId}`);
+        if (res.ok) {
+          const userAksi = await res.json();
+          setUserAksiData(userAksi);
+
+          // Determine AksiIndex based on UserAksi length
+          const aksiCount = userAksi.length;
+          if (aksiCount >= aksi.length) {
+            toast.info("Kamu telah menyelesaikan semua aksi!");
+            router.push(`/action/${campaignId}`);
+          } else {
+            setCurrentAksiIndex(aksiCount);
+          }
+        }
       } catch (error) {
         console.error("Failed to fetch data:", error);
       } finally {
-        setLoading(false); // End loading
-        }
+        setLoading(false);
+      }
     };
 
     fetchData();
-  }, [campaignId]);
+  }, [campaignId, router]);
 
-    if (loading) {
-        return (
-        <div className="min-h-screen flex items-center justify-center">
-            <h1 className="text-2xl font-bold text-gray-600">Memuat data...</h1>
-        </div>
-        );
-    }    
+  const handleSubmit = async () => {
+    const payload = {
+      campaignId,
+      deskripsi: textInput.trim()
+        ? `Aksi ${currentAksiIndex + 1}: ${textInput}`
+        : `Aksi ${currentAksiIndex + 1}: ${aksiList[currentAksiIndex].deskripsi}`,
+      fotoDokumentasi: "", // Placeholder
+    };
 
-  if (aksiList.length === 0) {
+    try {
+      const res = await fetch("/api/actions/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        router.refresh();
+        toast.success(`Kamu telah menyelesaikan aksi ke-${currentAksiIndex+1}`);
+        router.push(`/action/${campaignId}`);
+      } else {
+        toast.error("Gagal mengirim aksi.");
+      }
+    } catch (error) {
+      console.error("Error submitting aksi:", error);
+      toast.error("Terjadi kesalahan, silakan coba lagi.");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <h1 className="text-2xl font-bold text-gray-600">Memuat data...</h1>
+      </div>
+    );
+  }
+
+  if (!aksiList.length) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <h1 className="text-2xl font-bold text-gray-600">
@@ -71,70 +119,15 @@ const DocumentationPage: React.FC = () => {
 
   const currentAksi = aksiList[currentAksiIndex];
 
-  const loadExistingData = () => {
-    const existingData = userAksiData.find((aksi) => aksi.aksiId === currentAksi.id);
-    if (existingData) {
-      setImageInput(existingData.fotoDokumentasi);
-      setTextInput(existingData.deskripsi);
-    } else {
-      setImageInput(null);
-      setTextInput("");
-    }
-  };
-
-  const handleNavigation = (direction: "next" | "prev") => {
-    setCurrentAksiIndex((prev) => {
-      const newIndex = direction === "next" ? prev + 1 : prev - 1;
-      if (newIndex >= 0 && newIndex < aksiList.length) {
-        return newIndex;
-      }
-      return prev;
-    });
-    setTimeout(loadExistingData, 0);
-  };
-
-  const handleSubmit = async () => {
-    const payload = {
-      campaignId,
-      deskripsi: textInput.trim()
-        ? `Aksi ${currentAksiIndex + 1}: ${textInput}`
-        : `Aksi ${currentAksiIndex + 1}: ${aksiList[currentAksiIndex].deskripsi}`, // Fallback to current aksi description
-      fotoDokumentasi: "", // Placeholder for image upload
-    };
-  
-    try {
-      const res = await fetch("/api/actions/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-  
-      const result = await res.json();
-  
-      if (!res.ok) {
-        console.error(result.error || "Failed to submit aksi");
-        toast("Failed to submit aksi.");
-      } else {
-        toast("Aksi submitted successfully!");
-        router.push(`/action/${campaignId}`); // Navigate back to the action page
-      }
-    } catch (error) {
-      console.error("Error submitting aksi:", error);
-      toast("An error occurred while submitting aksi.");
-    }
-  };
-  
-  
-
   return (
     <div className="container mx-auto py-8 px-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <BackButton />
         <h1 className="text-3xl font-bold text-gray-900 text-center">
-          Bantu Bersih-Bersih Lingkungan
+          {campaign?.judul}
         </h1>
-        <span className="text-gray-400 font-medium text-lg">Unity Foundation</span>
+        <span className="text-gray-400 font-medium text-lg">{campaign?.penyelenggara}</span>
       </div>
   
       {/* Progress Indicator */}
@@ -180,7 +173,7 @@ const DocumentationPage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <div className="ml-3">
+              <div className="ml-4 h-10">
                 <h3 className="text-gray-400 font-medium text-sm">
                   Aksi {currentAksi.id}
                 </h3>
@@ -242,28 +235,7 @@ const DocumentationPage: React.FC = () => {
           Submit Aksi
         </button>
       </div>
-  
-      {/* Navigation Buttons */}
-      <div className="flex justify-between mt-8">
-        <button
-          onClick={() => handleNavigation("prev")}
-          className={`flex items-center text-blue-500 font-medium ${
-            currentAksiIndex === 0 && "invisible"
-          }`}
-        >
-          <ArrowLeft size={20} className="mr-2" />
-          Sebelumnya
-        </button>
-        <button
-          onClick={() => handleNavigation("next")}
-          className={`flex items-center text-blue-500 font-medium ${
-            currentAksiIndex === aksiList.length - 1 && "invisible"
-          }`}
-        >
-          Selanjutnya
-          <ArrowRight size={20} className="ml-2" />
-        </button>
-      </div>
+
     </div>
   );        
 };
