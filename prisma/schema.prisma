@@ -54,12 +54,11 @@ model CampaignAksi {
   foto           String
   deskripsi      String
   penyelenggara  String
-  targetAksi   Int
-  progressAksi Int         @default(0)
-  batasWaktu     DateTime    
-  aksiList       Aksi[]      // Jenis aksi yang bisa dilakukan
-  pelakuAksiList     UserAksi[]      // Daftar pelaku aksi
-  konversi       Int         // Jumlah konversi, misalnya 1 aksi = Rp20.000
+  targetAksi     Int
+  progressAksi   Int         @default(0)
+  batasWaktu     DateTime
+  aksiList       Aksi[]      // One-to-many relationship to Aksi
+  pelakuAksiList UserAksi[]  // One-to-many relationship to UserAksi
   createdAt      DateTime    @default(now())
 }
 

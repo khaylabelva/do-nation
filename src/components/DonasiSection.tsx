@@ -1,6 +1,6 @@
 "use client";
 
-import DonasiCard from "./DonasiCard";
+import DonasiCard from "./cards/DonasiCard";
 import { useState, useEffect } from "react";
 import { getDonationsSection } from "@/lib/api"; // Import fungsi getDonations
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import DonasiCard from "../../../components/DonasiCard";
+import DonasiCard from "../../../components/cards/DonasiCard";
 import Navbar from "@/components/layout/navbar";
 import { getDonations } from "@/lib/api"; // Import fungsi getDonations
 import BackButton from "@/components/ui/backbutton";

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/layout/navbar';
-import DonasiCard from '@/components/DonasiCard'; // Import DonasiCard component
+import DonasiCard from '@/components/cards/DonasiCard'; // Import DonasiCard component
 
 import HeroBanner from '@Images/hero-banner.png'; 
 

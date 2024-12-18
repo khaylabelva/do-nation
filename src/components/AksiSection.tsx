@@ -1,16 +1,10 @@
 "use client";
 
-import AksiCard from "./AksiCard";
+import AksiCard from "./cards/AksiCard";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { getActionsSection } from "@/lib/api"; // Import fungsi getActions
 
 const AksiSection: React.FC = () => {
-  const router = useRouter();
-
   interface Action {
-    batasWaktu: string;
-    jumlahAksi: number;
     id: number;
     judul: string;
     foto: string;
@@ -19,37 +13,37 @@ const AksiSection: React.FC = () => {
     targetAksi: number;
     progressAksi: number;
     konversi: number;
-    aksiList: {
-      // Define the structure of aksiList items here
-    }[];
+    batasWaktu: string;
+    aksiList: { /* Structure of aksiList items */ }[];
+    pelakuAksiList: { /* Structure of pelakuAksiList items */ }[];
   }
-  
+
   const [actions, setActions] = useState<Action[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Fetch data dari database saat komponen pertama kali dimuat
+  // Fetch all campaignAksi from API
   useEffect(() => {
     const fetchActions = async () => {
-      const data = await getActionsSection();
-      setActions(data);
+      try {
+        const res = await fetch("/api/actions");
+        if (!res.ok) throw new Error("Failed to fetch actions");
+        const data = await res.json();
+        setActions(data);
+      } catch (error) {
+        console.error("Error fetching actions:", error);
+      }
     };
 
     fetchActions();
   }, []);
 
-  // Fungsi untuk navigasi carousel ke kanan
+  // Function for carousel navigation
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % Math.ceil(actions.length / 2));
   };
 
-  // Fungsi untuk navigasi carousel ke kiri
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev - 1 + Math.ceil(actions.length / 2)) % Math.ceil(actions.length / 2));
-  };
-
-  // Fungsi untuk mengarahkan ke halaman detail aksi
-  const handleCardClick = (id: number) => {
-    router.push(`/action/${id}`); // Redirect ke halaman berdasarkan id
   };
 
   return (
@@ -69,9 +63,19 @@ const AksiSection: React.FC = () => {
             transform: `translateX(-${currentIndex * 100}%)`,
           }}
         >
-          {actions.map((item, index) => (
-            <div key={index} className="w-1/2 flex-shrink-0 p-2 h-full items-stretch">
-              <AksiCard {...item} onClick={() => handleCardClick(item.id)} />
+          {actions.map((item) => (
+            <div key={item.id} className="w-1/2 flex-shrink-0 p-2 h-full items-stretch">
+              <AksiCard
+                id={item.id}
+                judul={item.judul}
+                foto={item.foto}
+                deskripsi={item.deskripsi}
+                penyelenggara={item.penyelenggara}
+                targetAksi={item.targetAksi}
+                progressAksi={item.progressAksi}
+                konversi={item.konversi}
+                batasWaktu={item.batasWaktu} 
+                jumlahAksi={item.aksiList.length}/>
             </div>
           ))}
         </div>

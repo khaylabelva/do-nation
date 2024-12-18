@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Navbar from "@/components/layout/navbar";
-import DonasiCard from "@/components/DonasiCard";
-import AksiCard from "@/components/AksiCard";
+import AksiCard from "@/components/cards/AksiCard";
 import { toast } from "sonner";
+import HistoryDonasiCard from "@/components/cards/HistoryDonasiCard";
+import HistoryAksiCard from "@/components/cards/HistoryAksiCard";
 
 const History = () => {
   const [selectedType, setSelectedType] = useState<"donasi" | "aksi">("donasi");
@@ -43,11 +44,11 @@ const History = () => {
       {/* Main Content */}
       <div className="flex-grow p-6 px-12 flex gap-8">
         {/* Summary Section */}
-        <div className="w-1/4 space-y-6">
+        <div className="min-w-max space-y-6">
           <h2 className="text-2xl font-bold text-blue-600">Rekapitulasi</h2>
 
           {/* Total Donasi */}
-          <div className="bg-white p-6 rounded-2xl border flex items-center">
+          <div className="bg-white p-6 pr-20 rounded-2xl border flex items-center">
             <div className="bg-blue-100 p-3 rounded-full">
               <span className="text-blue-600 text-2xl">💙</span>
             </div>
@@ -108,20 +109,19 @@ const History = () => {
             >
               {selectedType === "donasi" ? (
                 donations.length > 0 ? (
-                  donations.map((donation) => (
+                  donations.slice().reverse().map((donation) => (
                     <div
                       key={donation.id}
                       className="flex-shrink-0 w-[380px] h-[350px]"
                     >
-                      <DonasiCard
-                        id={donation.id}
+                      <HistoryDonasiCard
+                        id={donation.campaignId}
                         judul={donation.campaign.judul}
                         foto={donation.campaign.foto}
-                        deskripsi={donation.campaign.deskripsi}
+                        deskripsi={donation.deskripsi}
                         penyelenggara={donation.campaign.penyelenggara}
-                        targetDonasi={donation.campaign.targetDonasi}
-                        progressDonasi={donation.campaign.progressDonasi}
-                        batasWaktu={donation.campaign.batasWaktu}
+                        jumlah={donation.jumlah}
+                        createdAt={donation.createdAt}
                       />
                     </div>
                   ))
@@ -129,22 +129,20 @@ const History = () => {
                   <p className="text-gray-500">No donation history available.</p>
                 )
               ) : actions.length > 0 ? (
-                actions.map((action) => (
+                actions.slice().reverse().map((action) => (
                   <div
                     key={action.id}
-                    className="flex-shrink-0 w-[500px] h-[172px]"
+                    className="flex-shrink-0 w-[600px] h-[172px]"
                   >
-                    <AksiCard
-                      id={action.id}
+                    <HistoryAksiCard
+                      id={action.campaignId}
                       judul={action.campaign.judul}
                       foto={action.campaign.foto}
-                      deskripsi={action.campaign.deskripsi}
+                      deskripsi={action.deskripsi}
                       penyelenggara={action.campaign.penyelenggara}
                       targetAksi={action.campaign.targetAksi}
                       progressAksi={action.campaign.progressAksi}
-                      jumlahAksi={action.jumlahAksi}
-                      konversi={action.campaign.konversi}
-                      batasWaktu={action.campaign.batasWaktu}
+                      createdAt={action.createdAt}
                     />
                   </div>
                 ))

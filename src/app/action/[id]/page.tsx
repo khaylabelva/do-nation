@@ -19,7 +19,7 @@ interface Campaign {
   pelakuAksiList: any[]; // Adjust type as necessary
   batasWaktu: Date;
   konversi: number;
-}
+} 
 
 const ActionPage: React.FC = () => {
   const params = useParams(); // Dynamically access route parameters

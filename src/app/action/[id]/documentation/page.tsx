@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getAksiByCampaignId } from "@/lib/api"; // Ensure this is a client-compatible API call
-import { useParams } from "next/navigation"; // Use the Next.js `useParams` hook to retrieve params dynamically
-import { set } from "react-hook-form";
+import { useParams, useRouter } from "next/navigation"; // Use the Next.js `useParams` hook to retrieve params dynamically";
 
 interface Aksi {
   id: number;
@@ -21,6 +20,7 @@ interface UserAksi {
 const DocumentationPage: React.FC = () => {
   const params = useParams(); // Use the hook to get the `id`
   const campaignId = parseInt(params.id as string, 10);
+  const router = useRouter();
 
   const [aksiList, setAksiList] = useState<Aksi[]>([]);
   const [currentAksiIndex, setCurrentAksiIndex] = useState(0);
@@ -91,9 +91,11 @@ const DocumentationPage: React.FC = () => {
 
   const handleSubmit = async () => {
     const payload = {
-      campaignId,           // Replace this with your current campaign ID
-      deskripsi: textInput, // Text area input
-      fotoDokumentasi: "",  // Placeholder for image upload
+      campaignId,
+      deskripsi: textInput.trim()
+        ? `Aksi ${currentAksiIndex + 1}: ${textInput}`
+        : `Aksi ${currentAksiIndex + 1}: ${aksiList[currentAksiIndex].deskripsi}`, // Fallback to current aksi description
+      fotoDokumentasi: "", // Placeholder for image upload
     };
   
     try {
@@ -104,16 +106,20 @@ const DocumentationPage: React.FC = () => {
       });
   
       const result = await res.json();
-      if (res.ok) {
-        alert("Aksi submitted successfully!");
-      } else {
-        console.error(result.error);
+  
+      if (!res.ok) {
+        console.error(result.error || "Failed to submit aksi");
         alert("Failed to submit aksi.");
+      } else {
+        alert("Aksi submitted successfully!");
+        router.push(`/action/${campaignId}`); // Navigate back to the action page
       }
     } catch (error) {
       console.error("Error submitting aksi:", error);
+      alert("An error occurred while submitting aksi.");
     }
   };
+  
   
 
   return (

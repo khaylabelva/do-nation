@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import AksiCard from "../../../components/AksiCard";
+import AksiCard from "../../../components/cards/AksiCard";
 import Navbar from "@/components/layout/navbar";
 import { getActions } from "@/lib/api"; // Path sesuai lokasi file
 import BackButton from "@/components/ui/backbutton";

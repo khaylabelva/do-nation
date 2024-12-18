@@ -2,7 +2,7 @@
 "use client";
 
 import BackButton from "@/components/ui/backbutton";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getDonationCampaignById } from "@/lib/api";
 import { toast } from "sonner";
@@ -24,6 +24,7 @@ type PaymentMethod = {
 };
 
 const PaymentPage: React.FC = () => {
+  const router = useRouter();
   const params = useParams(); // Get dynamic route parameters
   const [donationCampaign, setDonationCampaign] = useState<DonationCampaign | null>(null);
   const [loading, setLoading] = useState(true); // Loading state
@@ -61,7 +62,7 @@ const PaymentPage: React.FC = () => {
       toast.error("Donation campaign data is not available.");
       return;
     }
-  
+
     try {
       const res = await fetch("/api/donations/submit", {
         method: "POST",
@@ -75,22 +76,21 @@ const PaymentPage: React.FC = () => {
           deskripsi: donationDescription || "",
         }),
       });
-  
+
       const data = await res.json();
-  
+
       if (!res.ok) {
         console.error(data.error || "Failed to record donation");
-        toast.error("Failed to record donation. Please try again.");
+        toast.error("Gagal melakukan donasi :(");
       } else {
-        toast.success("Donation recorded successfully!");
-        console.log(data.message);
+        toast.success(`Berhasil mendonasikan! Rp${nominalDonasi}`);
+        router.push(`/donation/${donationCampaign.id}`); // Navigate to /history after successful submission
       }
     } catch (error) {
       console.error("Error submitting donation:", error);
       toast.error("An error occurred. Please try again.");
     }
   };
-  
   
 
   useEffect(() => {

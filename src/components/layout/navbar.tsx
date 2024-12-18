@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { UserCircle } from 'lucide-react'; // Import User icon
 import ProfileIcon from '@Images/profile-icon.png';
 
 interface User {
@@ -64,6 +63,8 @@ const Navbar = () => {
     }
   };
 
+  const isDonationActive = pathname.includes('/donation') || pathname.includes('/action') || pathname === '/homepage';
+
   return (
     <div className="flex justify-between items-center p-6 px-12 bg-white">
       <div className="flex flex-row items-center gap-6">
@@ -81,19 +82,28 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <div className="flex flex-row text-xl font-semibold items-center gap-8 ml-2">
-          {navLinks.map((link) => (
-            <h1
-              key={link.name}
-              onClick={() => router.push(link.path)}
-              className={`cursor-pointer bg-transparent transition-transform duration-300 transform hover:scale-105 ${
-                pathname === link.path
-                  ? 'text-blue-500 underline decoration-blue-500 underline-offset-4'
-                  : 'text-gray-800'
-              }`}
-            >
-              {link.name}
-            </h1>
-          ))}
+          {navLinks.map((link) => {
+            const isActive =
+              link.path === '/' && pathname === '/'
+                ? true
+                : link.path === '/homepage' && isDonationActive
+                ? true
+                : link.path === '/history' && pathname === '/history';
+
+            return (
+              <h1
+                key={link.name}
+                onClick={() => router.push(link.path)}
+                className={`cursor-pointer bg-transparent transition-transform duration-300 transform hover:scale-105 ${
+                  isActive
+                    ? 'text-blue-500 underline decoration-blue-500 underline-offset-4'
+                    : 'text-gray-800'
+                }`}
+              >
+                {link.name}
+              </h1>
+            );
+          })}
         </div>
       </div>
 
@@ -106,7 +116,7 @@ const Navbar = () => {
               alt="Profile Icon"
               width={36}
               height={36}
-              className="rounded-full" // Optional: To make it circular
+              className="rounded-full"
             />
             <span className="text-xl ml-2">{user.username}</span>
           </div>
@@ -128,7 +138,6 @@ const Navbar = () => {
           </Button>
         )}
       </div>
-
     </div>
   );
 };
