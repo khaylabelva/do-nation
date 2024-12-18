@@ -242,3 +242,61 @@ export async function getUserAksiByCampaignId(campaignId: number) {
     fotoDokumentasi: aksi.fotoDokumentasi,
   }));
 }
+
+// Fetch Donasi Leaderboard
+export async function getDonasiLeaderboard() {
+  try {
+    const leaderboard = await prisma.user.findMany({
+      where: {
+        totalDonasi: {
+          gt: 0, // Only users with totalDonasi > 0
+        },
+      },
+      select: {
+        id: true,
+        username: true,
+        totalDonasi: true,
+      },
+      orderBy: {
+        totalDonasi: "desc", // Sort by totalDonasi descending
+      },
+    });
+
+    return leaderboard.map((user) => ({
+      username: user.username,
+      total: user.totalDonasi,
+    }));
+  } catch (error) {
+    console.error("Error fetching donasi leaderboard:", error);
+    throw error;
+  }
+}
+
+// Fetch Aksi Leaderboard
+export async function getAksiLeaderboard() {
+  try {
+    const leaderboard = await prisma.user.findMany({
+      where: {
+        totalAksi: {
+          gt: 0, // Only users with totalAksi > 0
+        },
+      },
+      select: {
+        id: true,
+        username: true,
+        totalAksi: true,
+      },
+      orderBy: {
+        totalAksi: "desc", // Sort by totalAksi descending
+      },
+    });
+
+    return leaderboard.map((user) => ({
+      username: user.username,
+      total: user.totalAksi,
+    }));
+  } catch (error) {
+    console.error("Error fetching aksi leaderboard:", error);
+    throw error;
+  }
+}

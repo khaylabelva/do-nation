@@ -23,6 +23,7 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Donation', path: '/homepage' },
+    { name: 'Leaderboard', path: '/leaderboard' },
     { name: 'History', path: '/history' },
   ];
 
@@ -84,7 +85,7 @@ const Navbar = () => {
         <div className="flex flex-row text-xl font-semibold items-center gap-8 ml-2">
           {navLinks.map((link) => {
             const isActive =
-              link.path === '/' && pathname === '/'
+              link.path === '/' && pathname === '/' || link.path === '/leaderboard' && pathname === '/leaderboard'
                 ? true
                 : link.path === '/homepage' && isDonationActive
                 ? true

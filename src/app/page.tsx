@@ -104,7 +104,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {donations.length > 0 ? (
             donations.map((donation) => (
-              <div className='transition-transform duration-300 transform hover:scale-105'>
+              <div className='transition-transform duration-300 transform hover:scale-105' key={donation.id}>
                 <DonasiCard
                   key={donation.id}
                   id={donation.id}
