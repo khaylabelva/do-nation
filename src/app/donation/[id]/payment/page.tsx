@@ -23,6 +23,12 @@ type PaymentMethod = {
   image: string;
 };
 
+interface User {
+  id: string;
+  username: string;
+  email: string;
+}
+
 const PaymentPage: React.FC = () => {
   const router = useRouter();
   const params = useParams(); // Get dynamic route parameters
@@ -30,10 +36,9 @@ const PaymentPage: React.FC = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [nominalDonasi, setNominalDonasi] = useState("10.000");
   const [donationDescription, setDonationDescription] = useState(""); 
-
+  const [user, setUser] = useState<User | null>(null); // User state
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] =
-    useState<PaymentMethod | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
 
   const paymentMethods: PaymentMethod[] = [
     { id: 1, name: "QRIS", image: "/payment/qris.png" },
@@ -46,7 +51,6 @@ const PaymentPage: React.FC = () => {
     const numericValue = value.replace(/\D/g, "");
     return new Intl.NumberFormat("id-ID").format(Number(numericValue));
   };
-  
 
   const togglePaymentModal = () => {
     setIsPaymentModalOpen(!isPaymentModalOpen);
@@ -91,7 +95,6 @@ const PaymentPage: React.FC = () => {
       toast.error("An error occurred. Please try again.");
     }
   };
-  
 
   useEffect(() => {
     const fetchCampaign = async () => {
@@ -107,7 +110,20 @@ const PaymentPage: React.FC = () => {
       }
     };
 
+    const fetchUser = async () => {
+      try {
+        const res = await fetch('/api/auth/user');
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.user);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user session", error);
+      }
+    };
+
     fetchCampaign();
+    fetchUser();
   }, [params.id]);
 
   if (loading) {
@@ -138,8 +154,8 @@ const PaymentPage: React.FC = () => {
             <div>
               <BackButton />
             </div>
-            <h1 className="text-2xl font-bold">{judul}</h1>
-            <span className="text-gray-500 text-md">{penyelenggara}</span>
+            <h1 className="text-[1.35rem] font-bold">{judul}</h1>
+            <span className="text-gray-500 text-sm">{penyelenggara}</span>
           </div>
         </div>
 
@@ -167,8 +183,8 @@ const PaymentPage: React.FC = () => {
           <div className="flex flex-col gap-4">
             {/* Informasi Donatur */}
             <div className="border border-gray-200 rounded-2xl bg-white p-5 shadow-sm flex flex-col">
-              <h3 className="font-semibold text-xl mb-2">Nama Donatur</h3>
-              <p className="text-gray-400 text-base mb-2">isi.email@contoh.com</p>
+              <h3 className="font-semibold text-xl mb-2">{user?.username || 'Loading...'}</h3>
+              <p className="text-gray-400 text-base mb-2">{user?.email || 'Loading...'}</p>
               {/* Toggle Switch */}
               <div className="flex items-center justify-between">
                 <label className="text-sm text-gray-600">
