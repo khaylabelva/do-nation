@@ -132,18 +132,27 @@ export default function HomePage() {
         </p>
         <div className="max-w-full mx-auto divide-y divide-gray-200">
           {[
-            "Bagaimana Cara Saya Berdonasi?",
-            "Bisakah Saya Berdonasi untuk Mengenang Seseorang?",
-            "Bisakah Saya Mengatur Donasi Berkala?",
-            "Bagaimana Donasi Saya Akan Digunakan?",
+            {
+              question: "Bagaimana Cara Saya Berdonasi?",
+              answer: "Untuk berdonasi, Anda dapat mengunjungi halaman donasi kami, memilih jumlah yang ingin Anda sumbangkan, dan memilih metode pembayaran yang paling nyaman bagi Anda. Kami menerima berbagai metode pembayaran termasuk kartu kredit, transfer bank, dan e-wallet.",
+            },
+            {
+              question: "Bisakah Saya Berdonasi untuk Mengenang Seseorang?",
+              answer: "Tentu saja! Anda bisa membuat donasi dalam nama seseorang yang ingin Anda kenang. Kami menyediakan opsi untuk menambahkan nama atau pesan pribadi pada donasi tersebut, sehingga bisa menjadi bentuk penghormatan yang berarti.",
+            },
+            {
+              question: "Bisakah Saya Mengatur Donasi Berkala?",
+              answer: "Ya, Anda dapat mengatur donasi berkala untuk memastikan sumbangan Anda terus berlanjut sesuai dengan jadwal yang Anda pilih. Cukup pilih opsi ‘Donasi Berkala’ saat Anda melakukan donasi pertama, dan tentukan frekuensi yang Anda inginkan.",
+            },
+            {
+              question: "Bagaimana Donasi Saya Akan Digunakan?",
+              answer: "Donasi Anda akan digunakan untuk mendukung berbagai program amal yang kami jalankan, seperti membantu anak-anak kurang mampu, membangun fasilitas kesehatan, dan mendukung pendidikan. Setiap dana akan dipergunakan dengan transparansi penuh, dan kami memberikan laporan penggunaan dana kepada para donatur.",
+            },
           ].map((faq, index) => (
-            <details
-              key={index}
-              className="group py-4 cursor-pointer"
-            >
+            <details key={index} className="group py-4 cursor-pointer">
               {/* FAQ Summary */}
               <summary className="flex justify-between items-center text-lg font-semibold text-gray-800 hover:text-blue-500 transition">
-                {faq}
+                {faq.question}
                 <span className="text-xl text-gray-400 group-open:rotate-45 transition-transform">
                   +
                 </span>
@@ -151,7 +160,7 @@ export default function HomePage() {
 
               {/* FAQ Content */}
               <p className="mt-2 text-sm text-gray-500">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec posuere ultricies nisi non interdum.
+                {faq.answer}
               </p>
             </details>
           ))}
