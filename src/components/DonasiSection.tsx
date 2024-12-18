@@ -43,7 +43,7 @@ const DonasiSection: React.FC = () => {
     <section className="my-16 relative mb-32">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Donasi</h2>
-        <a href="/homepage/donations" className="text-blue-500 text-sm font-semibold hover:underline">
+        <a href="/homepage/donations" className="text-blue-500 text-sm font-semibold">
           Lihat Selengkapnya
         </a>
       </div>
@@ -57,7 +57,7 @@ const DonasiSection: React.FC = () => {
           }}
         >
           {donations.map((item) => (
-            <div key={item.id} className="w-1/3 flex-shrink-0 p-2 h-full items-stretch">
+            <div key={item.id} className="w-1/3 flex-shrink-0 p-2 h-full items-stretch transition-transform duration-300 transform hover:scale-105">
               <DonasiCard {...item} />
             </div>
           ))}

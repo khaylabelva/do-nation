@@ -21,7 +21,7 @@ import { toast } from 'sonner';
 import { signUp } from '../api/auth/signup/route';
 
 export const signUpSchema = z.object({
-  username: z.string().min(5, 'Username must be at least 5 characters'),
+  username: z.string().min(5, 'Username must be at least 5 characters').max(12, 'Username must be at most 12 characters'),
   email: z.string().email('Invalid email format'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
 });

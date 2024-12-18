@@ -71,7 +71,7 @@ const HistoryDonasiCard: React.FC<HistoryDonasiCardProps> = ({
         </div>
 
         {/* Donation Info and Date */}
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center justify-between text-sm mt-2">
           <span className="text-gray-600 font-medium">
             Jumlah Donasi: <span className="font-bold text-gray-800">Rp{formatNumber(jumlah)}</span>
           </span>

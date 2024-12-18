@@ -42,6 +42,13 @@ export async function POST(req: NextRequest) {
         },
       });
 
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          totalAksi: { increment: 1 },
+        },
+      });
+
       return userAksi;
     });
 

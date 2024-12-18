@@ -50,7 +50,7 @@ const AksiSection: React.FC = () => {
     <section className="mt-4 mb-4 relative">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Aksi Sosial</h2>
-        <a href="/homepage/actions" className="text-blue-500 text-sm font-semibold hover:underline">
+        <a href="/homepage/actions" className="text-blue-500 text-sm font-semibold">
           Lihat Selengkapnya
         </a>
       </div>
@@ -58,13 +58,13 @@ const AksiSection: React.FC = () => {
       {/* Carousel Container */}
       <div className="relative overflow-hidden gap-4">
         <div
-          className="flex transition-transform duration-700 ease-in-out mb-8"
+          className="flex transition-transform duration-700 ease-in-out mb-8 gap-2"
           style={{
             transform: `translateX(-${currentIndex * 100}%)`,
           }}
         >
           {actions.map((item) => (
-            <div key={item.id} className="w-1/2 flex-shrink-0 p-2 h-full items-stretch">
+            <div key={item.id} className="w-1/2 flex-shrink-0 p-2 h-full items-stretch transition-transform duration-300 transform hover:scale-105">
               <AksiCard
                 id={item.id}
                 judul={item.judul}

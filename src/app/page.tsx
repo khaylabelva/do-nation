@@ -30,13 +30,13 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Banner Section */}
-      <div className="relative w-full mt-8 max-w-[1200px] mx-auto h-[360px] flex bg-blue-100 overflow-hidden rounded-2xl">
+      <div className="relative w-full mt-8 max-w-[1200px] mx-auto h-[360px] flex bg-blue-100 overflow-hidden rounded-2xl transition-transform duration-300 transform hover:scale-105">
         <Link href="/homepage" className="w-full h-full">
           <Image
             src={HeroBanner}
             alt="Hero Banner"
             layout="fill"
-            className="cursor-pointer"
+            className="cursor-pointer "
           />
         </Link>
       </div>
@@ -71,7 +71,7 @@ export default function HomePage() {
         ].map((item, index) => (
           <div 
             key={index} 
-            className="flex flex-col justify-end bg-white border-[0.2px] border-gray-500 rounded-2xl text-justify p-6 min-h-[300px] hover:shadow-lg transition"
+            className="flex flex-col justify-end bg-white border-[0.2px] border-gray-500 rounded-2xl text-justify p-6 min-h-[300px] transition-transform duration-300 transform hover:scale-105"
           >
             {/* Image */}
             <div className="w-12 h-12 bg-gray-200 rounded-full flex justify-center mb-4 overflow-hidden">
@@ -104,17 +104,19 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {donations.length > 0 ? (
             donations.map((donation) => (
-              <DonasiCard
-                key={donation.id}
-                id={donation.id}
-                judul={donation.judul}
-                foto={donation.foto}
-                deskripsi={donation.deskripsi}
-                penyelenggara={donation.penyelenggara}
-                targetDonasi={donation.targetDonasi}
-                progressDonasi={donation.progressDonasi}
-                batasWaktu={donation.batasWaktu}
-              />
+              <div className='transition-transform duration-300 transform hover:scale-105'>
+                <DonasiCard
+                  key={donation.id}
+                  id={donation.id}
+                  judul={donation.judul}
+                  foto={donation.foto}
+                  deskripsi={donation.deskripsi}
+                  penyelenggara={donation.penyelenggara}
+                  targetDonasi={donation.targetDonasi}
+                  progressDonasi={donation.progressDonasi}
+                  batasWaktu={donation.batasWaktu}
+                />
+              </div>
             ))
           ) : (
             <p className="text-center text-gray-500 col-span-3">

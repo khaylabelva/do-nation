@@ -15,7 +15,7 @@ const HeroSection: React.FC = () => {
           <img
             src="/assets/HeroSectionImage.jpg"
             alt="Hero Image"
-            className="w-80 h-80 md:w-120 md:h-120 object-contain"
+            className="w-80 h-80 md:w-120 md:h-120 object-contain transition-transform duration-300 transform hover:scale-110"
           />
         </div>
       </section>

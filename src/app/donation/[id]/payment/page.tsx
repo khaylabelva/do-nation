@@ -67,6 +67,11 @@ const PaymentPage: React.FC = () => {
       return;
     }
 
+    if (!selectedPaymentMethod) {
+      toast.error("Please select a payment method.");
+      return;
+    }
+
     try {
       const res = await fetch("/api/donations/submit", {
         method: "POST",

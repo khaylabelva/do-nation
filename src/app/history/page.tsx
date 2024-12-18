@@ -108,7 +108,7 @@ const History = () => {
           {loading ? (
             <p className="flex flex-col items-center justify-center text-gray-500 text-lg mx-auto h-[200px]">
               <span className="text-2xl font-bold text-gray-600 mb-4">
-                Loading...
+                Memuat Data
               </span>
             </p>
           ) : (

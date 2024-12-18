@@ -42,6 +42,13 @@ export async function POST(req: Request) {
         },
       });
 
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          totalDonasi: { increment: jumlah },
+        },
+      });
+
       return userDonasi; // Return the created donation record
     });
 
