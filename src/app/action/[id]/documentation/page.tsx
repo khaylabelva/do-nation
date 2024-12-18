@@ -160,7 +160,7 @@ const DocumentationPage: React.FC = () => {
       {/* Content Grid */}
       <div className="grid grid-cols-2 gap-8">
         {/* Kiri: Aksi Details dan Upload File */}
-        <div className="space-y-6">
+        <div className="flex flex-col gap-6">
           {/* Aksi Details */}
           <div className="border border-gray-300 rounded-lg p-6 bg-white">
             <div className="flex items-center mb-4">
@@ -192,7 +192,7 @@ const DocumentationPage: React.FC = () => {
           </div>
   
           {/* Upload File */}
-          <div className="border border-gray-300 rounded-lg p-6 bg-white">
+          <div className="border border-gray-300 rounded-lg p-6 bg-white flex flex-col justify-between h-full">
             <label className="block font-semibold text-gray-800 mb-2">
               Upload File
             </label>
@@ -202,18 +202,24 @@ const DocumentationPage: React.FC = () => {
               onChange={(e) => e.target.files && setImageInput(e.target.files[0])}
               className="block w-full border rounded-lg p-2 text-gray-500 focus:outline-none"
             />
-            {imageInput && (
-              <img
-                src={URL.createObjectURL(imageInput)}
-                alt="Preview"
-                className="mt-4 w-32 h-32 object-cover rounded-lg"
-              />
-            )}
+            <div className="flex items-center justify-center h-full">
+              {imageInput ? (
+                <img
+                  src={URL.createObjectURL(imageInput)}
+                  alt="Preview"
+                  className="w-32 h-32 object-cover rounded-lg"
+                />
+              ) : (
+                <span className="text-gray-400 italic">
+                  The preview will show up here
+                </span>
+              )}
+            </div>
           </div>
         </div>
   
         {/* Kanan: Deskripsi Input */}
-        <div className="border border-gray-300 rounded-lg p-6 bg-white">
+        <div className="border border-gray-300 rounded-lg p-6 bg-white h-full">
           <label className="block font-semibold text-gray-800 mb-2">
             Deskripsi Aksi
           </label>
@@ -222,7 +228,7 @@ const DocumentationPage: React.FC = () => {
             placeholder="Tulis caption untuk aksimu..."
             value={textInput}
             onChange={(e) => setTextInput(e.target.value)}
-            className="w-full border rounded-lg p-4 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border rounded-lg p-4 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[1/2]"
           ></textarea>
         </div>
       </div>
@@ -259,7 +265,7 @@ const DocumentationPage: React.FC = () => {
         </button>
       </div>
     </div>
-  );      
+  );        
 };
 
 export default DocumentationPage;
