@@ -143,7 +143,7 @@ const LeaderboardPage: React.FC = () => {
                 {data.map((entry, index) => (
                     <div
                     key={index}
-                    className="flex items-center justify-between p-4 bg-white rounded-xl shadow-md border"
+                    className="flex items-center justify-between p-4 bg-white rounded-xl shadow-md border transition-transform duration-300 transform hover:scale-105 hover:shadow-lg"
                     >
                     {/* Left Section */}
                     <div className="flex items-center">
