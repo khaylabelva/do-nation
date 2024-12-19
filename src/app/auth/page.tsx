@@ -27,8 +27,8 @@ const AuthenticatePage = async () => {
             </div>
             
             
-            <div className='w-full bg-[#2C63D2] h-screen'>
-                <Image src={DonateIcon} alt="Donate Icon" width="500" height="500" objectFit='cover' className='mt-40 ml-10'/>
+            <div className='w-full bg-[#2C63D2] h-screen flex items-center justify-center'>
+                <Image src={DonateIcon} alt="Donate Icon" width="1000" height="1000" objectFit='cover' className='bottom-0'/>
             </div>
         </div>
     </>

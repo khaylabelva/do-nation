@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id           String     @id @default(cuid()) // Menggunakan cuid() untuk ID unik
+  id           String     @id @default(cuid()) 
   username     String     @unique
   email        String     @unique
   password     String
@@ -22,7 +22,7 @@ model User {
   totalAksi    Int        @default(0) 
   aksiHistory  UserAksi[]   
   donasiHistory UserDonasi[]
-  session      Session[] // Relasi ke session
+  session      Session[] 
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 }

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import ProfileIcon from '@Images/profile-icon.png';
+import { logOut } from '@/app/api/auth/signout/route';
 
 interface User {
   id: string;
@@ -43,26 +44,6 @@ const Navbar = () => {
 
     fetchUser();
   }, []);
-
-  // Handle sign-out
-  const handleSignOut = async () => {
-    try {
-      const res = await fetch('/api/auth/signout', {
-        method: 'POST',
-      });
-
-      if (res.ok) {
-        setUser(null);
-        toast.success('You have successfully signed out.');
-        router.push('/auth');
-      } else {
-        toast.error('Failed to sign out. Please try again.');
-      }
-    } catch (error) {
-      console.error('Sign-out error:', error);
-      toast.error('Something went wrong. Please try again.');
-    }
-  };
 
   const isDonationActive = pathname.includes('/donation') || pathname.includes('/action') || pathname === '/campaign';
 
@@ -126,7 +107,7 @@ const Navbar = () => {
         {user ? (
           <Button
             className="bg-red-500 font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-red-600"
-            onClick={handleSignOut}
+            onClick={() => { logOut() }}
           >
             Keluar
           </Button>
