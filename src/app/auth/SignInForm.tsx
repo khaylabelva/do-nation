@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react'; // Icons for the eye toggle
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { signIn } from '../api/auth/signin/route';
+import { signIn } from '@/app/api/auth/auth.action';
 
 export const signInSchema = z.object({
   email: z.string().email(),

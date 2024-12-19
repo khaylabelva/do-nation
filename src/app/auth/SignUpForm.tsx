@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react'; // Icons for the toggle button
 import { toast } from 'sonner';
-import { signUp } from '../api/auth/signup/route';
+import { signUp } from '@/app/api/auth/auth.action';
 
 export const signUpSchema = z.object({
   username: z.string().min(5, 'Username must be at least 5 characters').max(12, 'Username must be at most 12 characters'),

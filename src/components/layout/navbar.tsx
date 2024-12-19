@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import ProfileIcon from '@Images/profile-icon.png';
-import { logOut } from '@/app/api/auth/signout/route';
+import { logOut } from '@/app/api/auth/auth.action';
 
 interface User {
   id: string;
