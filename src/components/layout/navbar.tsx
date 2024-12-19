@@ -66,24 +66,31 @@ const Navbar = () => {
         <div className="flex flex-row text-xl font-semibold items-center gap-8 ml-2">
           {navLinks.map((link) => {
             const isActive =
-              link.path === '/' && pathname === '/' || link.path === '/leaderboard' && pathname === '/leaderboard'
-                ? true
-                : link.path === '/campaign' && isDonationActive
-                ? true
-                : link.path === '/history' && pathname === '/history';
+              (link.path === '/' && pathname === '/') ||
+              (link.path === '/leaderboard' && pathname === '/leaderboard') ||
+              (link.path === '/campaign' && isDonationActive) ||
+              (link.path === '/history' && pathname === '/history');
 
             return (
-              <h1
+              <div
                 key={link.name}
                 onClick={() => router.push(link.path)}
-                className={`cursor-pointer bg-transparent transition-transform duration-300 transform hover:scale-105 ${
-                  isActive
-                    ? 'text-blue-500 underline decoration-blue-500 underline-offset-4'
-                    : 'text-gray-800'
-                }`}
+                className="relative cursor-pointer transition-transform duration-300 transform group"
               >
-                {link.name}
-              </h1>
+                <h1
+                  className={`transition-colors ${
+                    isActive ? 'text-blue-500' : 'text-gray-800'
+                  }`}
+                >
+                  {link.name}
+                </h1>
+                {/* Garis bawah */}
+                <span
+                  className={`absolute left-0 bottom-[-2px] h-[2px] bg-blue-500 transition-all duration-300 ease-in-out ${
+                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`}
+                ></span>
+              </div>
             );
           })}
         </div>
