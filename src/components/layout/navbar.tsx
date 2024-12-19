@@ -25,7 +25,7 @@ const Navbar = () => {
     { name: 'Home', path: '/' },
     { name: 'Donation', path: '/campaign' },
     { name: 'Leaderboard', path: '/leaderboard' },
-    { name: 'History', path: '/history' },
+    { name: 'History', path: '/history', requiresLogin: true }, // Requires login
   ];
 
   // Fetch user session on component mount
@@ -46,6 +46,14 @@ const Navbar = () => {
   }, []);
 
   const isDonationActive = pathname.includes('/donation') || pathname.includes('/action') || pathname === '/campaign';
+
+  const handleNavClick = (path: string, requiresLogin: boolean) => {
+    if (!user && requiresLogin) {
+      toast.error('Kamu harus login terlebih dahulu!');
+      return;
+    }
+    router.push(path);
+  };
 
   return (
     <div className="flex justify-between items-center p-6 px-12 bg-white">
@@ -74,7 +82,7 @@ const Navbar = () => {
             return (
               <div
                 key={link.name}
-                onClick={() => router.push(link.path)}
+                onClick={() => handleNavClick(link.path, link.requiresLogin || false)}
                 className="relative cursor-pointer transition-transform duration-300 transform group"
               >
                 <h1
@@ -114,7 +122,10 @@ const Navbar = () => {
         {user ? (
           <Button
             className="bg-red-500 font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-red-600"
-            onClick={() => { logOut() }}
+            onClick={() => {
+              logOut();
+              setUser(null); // Clear user state
+            }}
           >
             Keluar
           </Button>

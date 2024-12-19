@@ -18,6 +18,6 @@ export const logOut = async () => {
   const sessionCookie = await lucia.createBlankSessionCookie();
   (await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
-  toast.success('You have been logged out');
+  toast.success('Kamu berhasil keluar!');
   return redirect('/');
 };

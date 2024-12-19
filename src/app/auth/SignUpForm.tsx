@@ -51,7 +51,7 @@ const SignUpForm = () => {
     console.log(values)
     const res = await signUp(values)
     if (res.success) {
-        toast.success('Account created successfully')
+        toast.success('Akun berhasil dibuat!')
         router.push('/')
     } else {
         toast.error(res.error)

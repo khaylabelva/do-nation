@@ -46,7 +46,7 @@ const SignInForm = () => {
   async function onSubmit(values: z.infer<typeof signInSchema>) {
     const res = await signIn(values)
     if (res.success) {
-        toast.success('Login successful')
+        toast.success('Berhasil masuk!')
         router.push('/')
     } else {
         toast.error(res.error)

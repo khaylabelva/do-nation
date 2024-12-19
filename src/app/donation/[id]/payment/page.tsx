@@ -68,7 +68,7 @@ const PaymentPage: React.FC = () => {
     }
 
     if (!selectedPaymentMethod) {
-      toast.error("Please select a payment method.");
+      toast.error("Silahkan pilih metode pembayaran terlebih dahulu.");
       return;
     }
 

@@ -6,7 +6,7 @@ import Placeholder from "@Images/image-placeholder.png";
 import Image from "next/image";
 import ProgressBar from "@/components/ui/progressbar";
 import UnicefIcon from "@Images/unicef-logo.png";
-import ProfileIcon from "@Images/profile-icon.png";
+import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { getCampaignById, getUserDonasiByCampaignId } from "@/lib/api";
@@ -35,6 +35,7 @@ const DonationPage: React.FC = () => {
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [userDonasiList, setUserDonasiList] = useState<UserDonasi[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulate logged-in state
 
   const donationContainerRef = useRef<HTMLDivElement>(null);
 
@@ -61,13 +62,21 @@ const DonationPage: React.FC = () => {
 
   const scrollDonations = (direction: "left" | "right") => {
     if (donationContainerRef.current) {
-      const scrollAmount = 300; // Adjust scroll distance
-      if (direction === "left") {
-        donationContainerRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-      } else {
-        donationContainerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-      }
+      const scrollAmount = 300;
+      donationContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
     }
+  };
+
+  const handleDonationClick = () => {
+    if (!isLoggedIn) {
+      toast.error("Kamu harus login terlebih dahulu!");
+      return;
+    }
+    // Navigate to the payment page
+    window.location.href = `/donation/${campaign?.id}/payment`;
   };
 
   if (loading) {
@@ -106,10 +115,10 @@ const DonationPage: React.FC = () => {
               height={300}
             />
 
-           {/* Donation List Section */}
+            {/* Donation List Section */}
             <div className="relative mt-4">
               <h2 className="text-xl font-bold mb-2">Donasi Terbaru</h2>
-              
+
               <div className="flex items-center relative">
                 {/* Left Arrow */}
                 <button
@@ -145,8 +154,6 @@ const DonationPage: React.FC = () => {
                 </button>
               </div>
             </div>
-
-
           </div>
 
           {/* Right Content Section */}
@@ -184,12 +191,12 @@ const DonationPage: React.FC = () => {
                 {campaign.deskripsi}
               </p>
             </div>
-            <a
-              href={`/donation/${campaign.id}/payment`}
-              className="block text-center bg-[#4C84F6] text-white py-3 rounded-full text-lg font-semibold transition-transform duration-300 transform hover:scale-105 hover:shadow-lg hover:bg-[#2C63D2]"
+            <button
+              onClick={handleDonationClick}
+              className="w-full text-center bg-[#4C84F6] text-white py-3 rounded-full text-lg font-semibold transition-transform duration-300 transform hover:scale-105 hover:shadow-lg hover:bg-[#2C63D2]"
             >
               Donasi Sekarang
-            </a>
+            </button>
           </div>
         </div>
       </div>

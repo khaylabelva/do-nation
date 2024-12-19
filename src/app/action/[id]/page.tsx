@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { getCampaignAksiById, getUserAksiByCampaignId } from "@/lib/api";
 import CompactCard from "@/components/cards/CompactCard";
+import { toast } from "sonner"; // Import toast library
 
 interface Campaign {
   id: number;
@@ -38,6 +39,9 @@ const ActionPage: React.FC = () => {
   const [userAksiList, setUserAksiList] = useState<UserAksi[]>([]);
   const [loading, setLoading] = useState(true);
   const donationContainerRef = useRef<HTMLDivElement>(null);
+
+  // Simulated logged-in state (replace with actual authentication state)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchCampaignData = async () => {
@@ -70,6 +74,15 @@ const ActionPage: React.FC = () => {
         behavior: "smooth",
       });
     }
+  };
+
+  const handleMulaiAksiClick = () => {
+    if (!isLoggedIn) {
+      toast.error("Kamu harus login terlebih dahulu!");
+      return;
+    }
+    // Proceed to documentation page
+    window.location.href = `/action/${params.id}/documentation`;
   };
 
   if (loading) {
@@ -218,24 +231,22 @@ const ActionPage: React.FC = () => {
                   </div>
                 </div>
 
-              {/* Organizer Info */}
-              <div className="bg-gray-100 p-4 rounded-xl flex flex-col flex-1 items-start font-semibold">
-                <div className="text-2xl overflow-hidden whitespace-nowrap text-ellipsis w-[160px]">{campaign.penyelenggara}</div>
-                <p className="text-xs font-medium text-neutral-500">
-                  Penggalang Aksi
-                </p>
+                {/* Organizer Info */}
+                <div className="bg-gray-100 p-4 rounded-xl flex flex-col flex-1 items-start font-semibold">
+                  <div className="text-2xl overflow-hidden whitespace-nowrap text-ellipsis w-[160px]">{campaign.penyelenggara}</div>
+                  <p className="text-xs font-medium text-neutral-500">
+                    Penggalang Aksi
+                  </p>
+                </div>
               </div>
 
-
-              </div>
-
-              {/* Action Buttons */}
-              <a
-                href={`/action/${params.id}/documentation`}
+              {/* Action Button */}
+              <button
+                onClick={handleMulaiAksiClick}
                 className="w-full bg-[#4C84F6] text-white py-3 rounded-full text-lg text-center font-semibold transition-transform duration-300 transform hover:scale-105 hover:shadow-lg hover:bg-[#2C63D2]"
               >
                 Mulai Aksi
-              </a>
+              </button>
             </div>
           </div>
         </div>
