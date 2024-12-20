@@ -3,8 +3,6 @@
       <img src="https://github.com/user-attachments/assets/e1ccf870-e486-4a87-83a5-7100bdec82b5" alt="Project Banner">
     </a>
   <br />
-
-  <br>
   
   <h1 align="center">DoNation - The Next Level of Donation</h1>
 
@@ -26,15 +24,9 @@ Tugas Besar pada kuliah II3120 Layanan Sistem Teknologi Informasi bertujuan untu
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
-<div>
-  <br/>
-  ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-  <br/>
-  ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-  <br/>
-  ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
-  <br/>
-</div>
+- TypeScript
+- TailwindCSS
+- PostgreSQL
 
 
 ## <a name="features">🔋 Features</a>
@@ -82,7 +74,6 @@ dan lain-lainnya.
 | 18222139 - Salsabilla A.           | 
 |                                    | 
 | 18222140 - M. Maulana F.           | 
-|                                    | 
 
 ## <a name="quick-start">🚀 Website</a>
 
