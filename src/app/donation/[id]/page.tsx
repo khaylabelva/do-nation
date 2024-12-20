@@ -58,6 +58,28 @@ const DonationPage: React.FC = () => {
     };
 
     fetchCampaignData();
+
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('/api/auth/user', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          setIsLoggedIn(false); // No user session
+          return;
+        }
+
+        setIsLoggedIn(true); // User session exists
+
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        setIsLoggedIn(false); // No user session
+      }
+    };
+
+    fetchUser();
   }, [params.id]);
 
   const scrollDonations = (direction: "left" | "right") => {

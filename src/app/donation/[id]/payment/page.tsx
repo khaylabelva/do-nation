@@ -120,7 +120,9 @@ const PaymentPage: React.FC = () => {
         const res = await fetch('/api/auth/user');
         if (res.ok) {
           const data = await res.json();
-          setUser(data.user);
+          setUser(data);
+        } else {
+          console.error("Failed to fetch user session");
         }
       } catch (error) {
         console.error("Failed to fetch user session", error);

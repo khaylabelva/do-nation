@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { getCampaignAksiById, getUserAksiByCampaignId } from "@/lib/api";
 import CompactCard from "@/components/cards/CompactCard";
 import { toast } from "sonner"; // Import toast library
+import { set } from "zod";
 
 interface Campaign {
   id: number;
@@ -36,7 +37,7 @@ interface UserAksi {
 const ActionPage: React.FC = () => {
   const params = useParams();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
-  const [userAksiList, setUserAksiList] = useState<UserAksi[]>([]);
+  const [userAksiList, setIsLoggedInAksiList] = useState<UserAksi[]>([]);
   const [loading, setLoading] = useState(true);
   const donationContainerRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +56,7 @@ const ActionPage: React.FC = () => {
 
         // Fetch user actions related to this campaign
         const aksiData = await getUserAksiByCampaignId(campaignId);
-        setUserAksiList(aksiData);
+        setIsLoggedInAksiList(aksiData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -64,6 +65,28 @@ const ActionPage: React.FC = () => {
     };
 
     fetchCampaignData();
+
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('/api/auth/user', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          setIsLoggedIn(false); // No user session
+          return;
+        }
+
+        setIsLoggedIn(true); // User session exists
+
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        setIsLoggedIn(false); // No user session
+      }
+    };
+
+    fetchUser();
   }, [params.id]);
 
   const scrollDonations = (direction: "left" | "right") => {
@@ -77,6 +100,7 @@ const ActionPage: React.FC = () => {
   };
 
   const handleMulaiAksiClick = () => {
+    console.log(isLoggedIn);
     if (!isLoggedIn) {
       toast.error("Kamu harus login terlebih dahulu!");
       return;
