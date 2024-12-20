@@ -8,6 +8,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import ProfileIcon from '@Images/profile-icon.png';
 import { logOut } from '@/app/api/auth/auth.action';
+import { Sign } from 'crypto';
+import SignOutButton from '../ui/signOutButton';
 
 interface User {
   id: string;
@@ -32,15 +34,25 @@ const Navbar = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch('/api/auth/user');
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data.user);
+        const response = await fetch('/api/auth/user', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          setUser(null); // No user session
+          return;
         }
+
+        const userData = await response.json();
+        setUser(userData);
       } catch (error) {
-        console.error('Failed to fetch user session', error);
+        console.error('Error fetching user:', error);
+        setUser(null); // No user session
       }
     };
+
+    console.log(user)
 
     fetchUser();
   }, []);
@@ -106,7 +118,7 @@ const Navbar = () => {
 
       {/* Conditional User Info and Button */}
       <div className="flex items-center gap-8">
-        {user && (
+        {user !== null && (
           <div className="flex items-center gap-2 text-gray-800 font-medium">
             <Image
               src={ProfileIcon}
@@ -120,15 +132,7 @@ const Navbar = () => {
         )}
 
         {user ? (
-          <Button
-            className="bg-red-500 font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-red-600"
-            onClick={() => {
-              logOut();
-              setUser(null); // Clear user state
-            }}
-          >
-            Keluar
-          </Button>
+          <SignOutButton>Keluar</SignOutButton>
         ) : (
           <Button
             className="bg-[#4C84F6] font-semibold text-white text-xl px-6 py-2 rounded-xl hover:bg-blue-600"

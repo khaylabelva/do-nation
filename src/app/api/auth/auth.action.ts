@@ -66,17 +66,13 @@ export const signUp = async (values: z.infer<typeof signUpSchema>) => {
 
 export const logOut = async () => {
     const currentSessionId = (await cookies()).get('lucia_session')?.value;
-  
+
     if (currentSessionId) {
         await lucia.invalidateSession(currentSessionId);
-    } else {
-      toast.error('Failed to log out');
-      return;
     }
-  
+
     const sessionCookie = await lucia.createBlankSessionCookie();
     (await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
-  
-    toast.success('Kamu berhasil keluar!');
-    return redirect('/');
-  };
+
+    return redirect('/auth');
+};

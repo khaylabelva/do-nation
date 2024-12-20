@@ -1,32 +1,15 @@
-// app/api/auth/user/route.ts
-import { getUser } from '@/lib/lucia';
+import { NextResponse } from "next/server";
+import { getUser } from "@/lib/lucia";
 
-export async function GET() {
-  try {
-    const user = await getUser();
-
-    if (!user) {
-      return new Response(
-        JSON.stringify({ user: null, message: 'No active session' }),
-        { status: 200 }
-      );
+export const GET = async () => {
+    try {
+        const user = await getUser(); // Call the existing `getUser` function
+        if (!user) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+        return NextResponse.json(user);
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
-
-    // Return user details
-    return new Response(
-      JSON.stringify({
-        user: {
-          username: user.username,
-          email: user.email,
-        },
-      }),
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Error fetching user session:', error);
-    return new Response(
-      JSON.stringify({ user: null, message: 'Internal server error' }),
-      { status: 500 }
-    );
-  }
-}
+};
